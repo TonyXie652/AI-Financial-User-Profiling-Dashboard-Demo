@@ -1,108 +1,179 @@
-import React, { useState, useEffect } from 'react';
-import Tooltip from '../../components/Tooltip';
-import { chartAreaGradient } from '../../charts/ChartjsConfig';
-import RealtimeChart from '../../charts/RealtimeChart';
-
-// Import utilities
-import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
+import React from 'react';
 
 function DashboardCard05() {
-
-  // IMPORTANT:
-  // Code below is for demo purpose only, and it's not covered by support.
-  // If you need to replace dummy data with real data, update the chart data source here.
-
-  // Fake real-time data
-  const [counter, setCounter] = useState(0);
-  const [increment, setIncrement] = useState(0);
-  const [range, setRange] = useState(35);
-  
-  // Dummy data to be looped
-  const data = [
-    57.81, 57.75, 55.48, 54.28, 53.14, 52.25, 51.04, 52.49, 55.49, 56.87,
-    53.73, 56.42, 58.06, 55.62, 58.16, 55.22, 58.67, 60.18, 61.31, 63.25,
-    65.91, 64.44, 65.97, 62.27, 60.96, 59.34, 55.07, 59.85, 53.79, 51.92,
-    50.95, 49.65, 48.09, 49.81, 47.85, 49.52, 50.21, 52.22, 54.42, 53.42,
-    50.91, 58.52, 53.37, 57.58, 59.09, 59.36, 58.71, 59.42, 55.93, 57.71,
-    50.62, 56.28, 57.37, 53.08, 55.94, 55.82, 53.94, 52.65, 50.25,
-  ];
-
-  const [slicedData, setSlicedData] = useState(data.slice(0, range));
-
-  // Generate fake dates from now to back in time
-  const generateDates = () => {
-    const now = new Date();
-    const dates = [];
-    data.forEach((v, i) => {
-      dates.push(new Date(now - 2000 - i * 2000));
-    });
-    return dates;
-  };
-
-  const [slicedLabels, setSlicedLabels] = useState(generateDates().slice(0, range).reverse());
-
-  // Fake update every 2 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCounter(counter + 1);
-    }, 2000);
-    return () => clearInterval(interval)
-  }, [counter]);
-
-  // Loop through data array and update
-  useEffect(() => {
-    setIncrement(increment + 1);
-    if (increment + range < data.length) {
-      setSlicedData(([x, ...slicedData]) => [...slicedData, data[increment + range]]);
-    } else {
-      setIncrement(0);
-      setRange(0);
-    }
-    setSlicedLabels(([x, ...slicedLabels]) => [...slicedLabels, new Date()]);
-    return () => setIncrement(0)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [counter]);
-
-  const chartData = {
-    labels: slicedLabels,
-    datasets: [
-      // Indigo line
-      {
-        data: slicedData,
-        fill: true,
-        backgroundColor: function(context) {
-          const chart = context.chart;
-          const {ctx, chartArea} = chart;
-          return chartAreaGradient(ctx, chartArea, [
-            { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
-            { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) }
-          ]);
-        },       
-        borderColor: getCssVariable('--color-violet-500'),
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: getCssVariable('--color-violet-500'),
-        pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,          
-        clip: 20,
-        tension: 0.2,
-      },
-    ],
-  };
-
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-gray-800 shadow-xs rounded-xl">
-      <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Real Time Value</h2>
-        <Tooltip className="ml-2">
-          <div className="text-xs text-center whitespace-nowrap">Built with Chart.js</div>
-        </Tooltip>
+    <div className="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-xs rounded-xl">
+      <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">AI重点关注用户表格</h2>
       </header>
-      {/* Chart built with Chart.js 3 */}
-      {/* Change the height attribute to adjust the chart height */}
-      <RealtimeChart data={chartData} width={595} height={248} />
+      <div className="p-3">
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full dark:text-gray-300">
+            {/* Table header */}
+            <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50 rounded-xs">
+              <tr>
+                <th className="p-2">
+                  <div className="font-semibold text-left">用户姓名</div>
+                </th>
+                <th className="p-2">
+                  <div className="font-semibold text-center">价值等级</div>
+                </th>
+                <th className="p-2">
+                  <div className="font-semibold text-center">流失概率</div>
+                </th>
+                <th className="p-2">
+                  <div className="font-semibold text-center">关键行为</div>
+                </th>
+                <th className="p-2">
+                  <div className="font-semibold text-center">AI建议</div>
+                </th>
+              </tr>
+            </thead>
+            {/* Table body */}
+            <tbody className="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
+              {/* Row */}
+              <tr>
+                <td className="p-2">
+                  <div className="flex items-center">
+                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
+                      <circle fill="#24292E" cx="18" cy="18" r="18" />
+                      <path
+                        d="M18 10.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V24c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z"
+                        fill="#FFF"
+                      />
+                    </svg>
+                    <div className="text-gray-800 dark:text-gray-100">王女士</div>
+                  </div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">高价值</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-green-500">25.3%</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">服务剩余时间小于7天，未查看续费权益</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-sky-500">推送续费提醒，突出限时优惠</div>
+                </td>
+              </tr>
+              {/* Row */}
+              <tr>
+                <td className="p-2">
+                  <div className="flex items-center">
+                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
+                      <circle fill="#1877F2" cx="18" cy="18" r="18" />
+                      <path
+                        d="M16.023 26 16 19h-3v-3h3v-2c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V16H23l-1 3h-2.72v7h-3.257Z"
+                        fill="#FFF"
+                        fillRule="nonzero"
+                      />
+                    </svg>
+                    <div className="text-gray-800 dark:text-gray-100">孙先生</div>
+                  </div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">中价值</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-green-500">31.7%</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">内容浏览稳定，付费转化意愿弱</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-sky-500">推送低门槛体验包或试用权益</div>
+                </td>
+              </tr>
+              {/* Row */}
+              <tr>
+                <td className="p-2">
+                  <div className="flex items-center">
+                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
+                      <circle fill="#EA4335" cx="18" cy="18" r="18" />
+                      <path
+                        d="M18 17v2.4h4.1c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C21.6 11.7 20 11 18.1 11c-3.9 0-7 3.1-7 7s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H18z"
+                        fill="#FFF"
+                        fillRule="nonzero"
+                      />
+                    </svg>
+                    <div className="text-gray-800 dark:text-gray-100">谷先生</div>
+                  </div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">中价值</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-green-500">38.6%</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">咨询点击率高，但停留时间短</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-sky-500">优化推荐内容，优先推送热点解读</div>
+                </td>
+              </tr>
+              {/* Row */}
+              <tr>
+                <td className="p-2">
+                  <div className="flex items-center">
+                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
+                      <circle fill="#4BC9FF" cx="18" cy="18" r="18" />
+                      <path
+                        d="M26 14.3c-.1 1.6-1.2 3.7-3.3 6.4-2.2 2.8-4 4.2-5.5 4.2-.9 0-1.7-.9-2.4-2.6C14 19.9 13.4 15 12 15c-.1 0-.5.3-1.2.8l-.8-1c.8-.7 3.5-3.4 4.7-3.5 1.2-.1 2 .7 2.3 2.5.3 2 .8 6.1 1.8 6.1.9 0 2.5-3.4 2.6-4 .1-.9-.3-1.9-2.3-1.1.8-2.6 2.3-3.8 4.5-3.8 1.7.1 2.5 1.2 2.4 3.3z"
+                        fill="#FFF"
+                        fillRule="nonzero"
+                      />
+                    </svg>
+                    <div className="text-gray-800 dark:text-gray-100">刘女士</div>
+                  </div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">成长型</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-green-500">17.5%</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">使用频率上升，开始关注深度研报</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-sky-500">推荐研报深度解读内容</div>
+                </td>
+              </tr>
+              {/* Row */}
+              <tr>
+                <td className="p-2">
+                  <div className="flex items-center">
+                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
+                      <circle fill="#0E2439" cx="18" cy="18" r="18" />
+                      <path
+                        d="M14.232 12.818V23H11.77V12.818h2.46zM15.772 23V12.818h2.462v4.087h4.012v-4.087h2.456V23h-2.456v-4.092h-4.012V23h-2.461z"
+                        fill="#E6ECF4"
+                      />
+                    </svg>
+                    <div className="text-gray-800 dark:text-gray-100">贺先生</div>
+                  </div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">中高价值</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-green-500">27.8%</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center">高频查看行情，较少使用分析工具</div>
+                </td>
+                <td className="p-2">
+                  <div className="text-center text-sky-500">推荐智能选股/行情预测功能</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

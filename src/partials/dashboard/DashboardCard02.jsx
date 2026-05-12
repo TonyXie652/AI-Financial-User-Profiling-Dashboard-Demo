@@ -25,10 +25,10 @@ function DashboardCard02() {
       // Indigo line
       {
         data: [
-          622, 622, 426, 471, 365, 365, 238,
-          324, 288, 206, 324, 324, 500, 409,
-          409, 273, 232, 273, 500, 570, 767,
-          808, 685, 767, 685, 685,
+          20320, 19880, 19540, 19130, 18820, 18460, 18130,
+          17980, 17760, 17540, 17320, 17180, 17040, 16890,
+          16780, 16640, 16520, 16390, 16470, 16610, 16820,
+          17040, 17280, 17420, 17480, 17489,
         ],
         fill: true,
         backgroundColor: function(context) {
@@ -47,25 +47,6 @@ function DashboardCard02() {
         pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
         pointBorderWidth: 0,
         pointHoverBorderWidth: 0,          
-        clip: 20,
-        tension: 0.2,
-      },
-      // Gray line
-      {
-        data: [
-          732, 610, 610, 504, 504, 504, 349,
-          349, 504, 342, 504, 610, 391, 192,
-          154, 273, 191, 191, 126, 263, 349,
-          252, 423, 622, 470, 532,
-        ],
-        borderColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        pointHoverBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,
         clip: 20,
         tension: 0.2,
       },
@@ -103,9 +84,14 @@ function DashboardCard02() {
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
-      <div className="grow max-sm:max-h-[128px] max-h-[128px]">
+      <div className="grow max-sm:max-h-[112px] max-h-[112px]">
         {/* Change the height attribute to adjust the chart height */}
-        <LineChart data={chartData} width={389} height={128} />
+        <LineChart data={chartData} width={389} height={112} />
+      </div>
+      <div className="px-5 pb-5 pt-2">
+        <div className="rounded-md bg-gray-50 px-3 py-2 text-[11px] font-semibold whitespace-nowrap text-gray-800 dark:bg-gray-700/40 dark:text-gray-100">
+          AI识别：新增潜力高价值用户621人
+        </div>
       </div>
     </div>
   );

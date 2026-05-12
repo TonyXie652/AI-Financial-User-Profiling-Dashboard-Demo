@@ -131,4 +131,12 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  html.theme-transition *,
+  html.theme-transition ::before,
+  html.theme-transition ::after {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }

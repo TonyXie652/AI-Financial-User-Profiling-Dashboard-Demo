@@ -26,6 +26,8 @@ function LineChart01({
 
   useEffect(() => {
     const ctx = canvas.current;
+    if (!ctx) return undefined;
+    Chart.getChart(ctx)?.destroy();
     // eslint-disable-next-line no-unused-vars
     const newChart = new Chart(ctx, {
       type: 'line',
@@ -37,7 +39,8 @@ function LineChart01({
         scales: {
           y: {
             display: false,
-            beginAtZero: true,
+            beginAtZero: false,
+            grace: '10%',
           },
           x: {
             type: 'time',

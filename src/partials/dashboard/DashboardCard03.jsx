@@ -25,10 +25,10 @@ function DashboardCard03() {
       // Indigo line
       {
         data: [
-          540, 466, 540, 466, 385, 432, 334,
-          334, 289, 289, 200, 289, 222, 289,
-          289, 403, 554, 304, 289, 270, 134,
-          270, 829, 344, 388, 364,
+          6680, 6920, 7210, 7480, 7760, 8020, 8270,
+          8460, 8680, 8890, 9060, 9240, 9380, 9490,
+          9610, 9740, 9880, 10040, 9860, 9720, 9540,
+          9680, 9820, 9900, 9940, 9962,
         ],
         fill: true,
         backgroundColor: function(context) {
@@ -47,25 +47,6 @@ function DashboardCard03() {
         pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
         pointBorderWidth: 0,
         pointHoverBorderWidth: 0,          
-        clip: 20,
-        tension: 0.2,
-      },
-      // Gray line
-      {
-        data: [
-          689, 562, 477, 477, 477, 477, 458,
-          314, 430, 378, 430, 498, 642, 350,
-          145, 145, 354, 260, 188, 188, 300,
-          300, 282, 364, 660, 554,
-        ],
-        borderColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        pointHoverBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,
         clip: 20,
         tension: 0.2,
       },
@@ -103,9 +84,14 @@ function DashboardCard03() {
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
-      <div className="grow max-sm:max-h-[128px] xl:max-h-[128px]">
+      <div className="grow max-sm:max-h-[112px] xl:max-h-[112px]">
         {/* Change the height attribute to adjust the chart height */}
-        <LineChart data={chartData} width={389} height={128} />
+        <LineChart data={chartData} width={389} height={112} />
+      </div>
+      <div className="px-5 pb-5 pt-2">
+        <div className="rounded-md bg-gray-50 px-3 py-2 text-[11px] font-semibold whitespace-nowrap text-gray-800 dark:bg-gray-700/40 dark:text-gray-100">
+          AI预测：未来7天高风险流失123人
+        </div>
       </div>
     </div>
   );

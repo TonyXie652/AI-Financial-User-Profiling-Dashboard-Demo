@@ -3,11 +3,11 @@ import { useThemeProvider } from '../utils/ThemeContext';
 
 import { chartColors } from './ChartjsConfig';
 import {
-  Chart, DoughnutController, ArcElement, TimeScale, Tooltip,
+  Chart, DoughnutController, ArcElement, TimeScale, Tooltip, Legend,
 } from 'chart.js';
 import 'chartjs-adapter-moment';
 
-Chart.register(DoughnutController, ArcElement, TimeScale, Tooltip);
+Chart.register(DoughnutController, ArcElement, TimeScale, Tooltip, Legend);
 
 function DoughnutChart({
   data,
@@ -25,6 +25,8 @@ function DoughnutChart({
 
   useEffect(() => {
     const ctx = canvas.current;
+    if (!ctx) return undefined;
+    Chart.getChart(ctx)?.destroy();
     // eslint-disable-next-line no-unused-vars
     const newChart = new Chart(ctx, {
       type: 'doughnut',
@@ -89,7 +91,7 @@ function DoughnutChart({
               const labelY = y + Math.sin(angle) * radius;
               const percentage = total ? Math.round((values[index] / total) * 100) : 0;
 
-              ctx.fillStyle = index === 2 ? '#FFFFFF' : '#111827';
+              ctx.fillStyle = '#111827';
               ctx.fillText(`${percentage}%`, labelX, labelY);
             });
 
