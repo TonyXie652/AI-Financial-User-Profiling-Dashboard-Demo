@@ -124,10 +124,10 @@ function Sidebar({
                       >
                         <div className="flex items-center justify-start px-4 py-2.5">
                           <span
-                            className={`text-xs font-medium transition-opacity duration-1500 ease-out ${
+                            className={`text-xs font-medium transition-opacity duration-1000 delay-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                               isActive
                                 ? "opacity-100"
-                                : "opacity-45 group-hover:opacity-85"
+                                : "opacity-38 group-hover:opacity-95"
                             }`}
                           >
                             {item.label}

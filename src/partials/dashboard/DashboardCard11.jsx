@@ -55,7 +55,7 @@ function DashboardCard11() {
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-gray-800 shadow-xs rounded-xl">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Reasons for Refund</h2>
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">AI总览分析</h2>
       </header>
       <div className="px-5 py-3">
         <div className="flex items-start">

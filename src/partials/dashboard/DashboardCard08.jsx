@@ -91,7 +91,7 @@ function DashboardCard08() {
   return (
     <div className="flex flex-col col-span-full bg-white dark:bg-gray-800 shadow-xs rounded-xl">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Sales Over Time (all stores)</h2>
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">KPI统计折线图</h2>
       </header>
       {/* Chart built with Chart.js 3 */}
       {/* Change the height attribute to adjust the chart height */}

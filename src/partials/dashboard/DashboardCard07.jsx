@@ -4,7 +4,7 @@ function DashboardCard07() {
   return (
     <div className="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-xs rounded-xl">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Top Channels</h2>
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">高价值/风险用户表格</h2>
       </header>
       <div className="p-3">
         {/* Table */}
@@ -14,19 +14,19 @@ function DashboardCard07() {
             <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50 rounded-xs">
               <tr>
                 <th className="p-2">
-                  <div className="font-semibold text-left">Source</div>
+                  <div className="font-semibold text-left">姓名</div>
                 </th>
                 <th className="p-2">
-                  <div className="font-semibold text-center">Visitors</div>
+                  <div className="font-semibold text-center">AI评级</div>
                 </th>
                 <th className="p-2">
-                  <div className="font-semibold text-center">Revenues</div>
+                  <div className="font-semibold text-center">资产</div>
                 </th>
                 <th className="p-2">
-                  <div className="font-semibold text-center">Sales</div>
+                  <div className="font-semibold text-center">投资</div>
                 </th>
                 <th className="p-2">
-                  <div className="font-semibold text-center">Conversion</div>
+                  <div className="font-semibold text-center">预测留存率</div>
                 </th>
               </tr>
             </thead>
@@ -43,7 +43,7 @@ function DashboardCard07() {
                         fill="#FFF"
                       />
                     </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Github.com</div>
+                    <div className="text-gray-800 dark:text-gray-100">王某</div>
                   </div>
                 </td>
                 <td className="p-2">
@@ -56,7 +56,7 @@ function DashboardCard07() {
                   <div className="text-center">267</div>
                 </td>
                 <td className="p-2">
-                  <div className="text-center text-sky-500">4.7%</div>
+                  <div className="text-center text-sky-500">64.7%</div>
                 </td>
               </tr>
               {/* Row */}
@@ -71,7 +71,7 @@ function DashboardCard07() {
                         fillRule="nonzero"
                       />
                     </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Facebook</div>
+                    <div className="text-gray-800 dark:text-gray-100">孙某</div>
                   </div>
                 </td>
                 <td className="p-2">
@@ -84,7 +84,7 @@ function DashboardCard07() {
                   <div className="text-center">249</div>
                 </td>
                 <td className="p-2">
-                  <div className="text-center text-sky-500">4.4%</div>
+                  <div className="text-center text-sky-500">64.4%</div>
                 </td>
               </tr>
               {/* Row */}
@@ -99,7 +99,7 @@ function DashboardCard07() {
                         fillRule="nonzero"
                       />
                     </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Google (organic)</div>
+                    <div className="text-gray-800 dark:text-gray-100">谷某</div>
                   </div>
                 </td>
                 <td className="p-2">
@@ -112,7 +112,7 @@ function DashboardCard07() {
                   <div className="text-center">224</div>
                 </td>
                 <td className="p-2">
-                  <div className="text-center text-sky-500">4.2%</div>
+                  <div className="text-center text-sky-500">64.2%</div>
                 </td>
               </tr>
               {/* Row */}
@@ -127,7 +127,7 @@ function DashboardCard07() {
                         fillRule="nonzero"
                       />
                     </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Vimeo.com</div>
+                    <div className="text-gray-800 dark:text-gray-100">刘先生</div>
                   </div>
                 </td>
                 <td className="p-2">
@@ -140,7 +140,7 @@ function DashboardCard07() {
                   <div className="text-center">220</div>
                 </td>
                 <td className="p-2">
-                  <div className="text-center text-sky-500">4.2%</div>
+                  <div className="text-center text-sky-500">54.2%</div>
                 </td>
               </tr>
               {/* Row */}
@@ -154,7 +154,7 @@ function DashboardCard07() {
                         fill="#E6ECF4"
                       />
                     </svg>
-                    <div className="text-gray-800 dark:text-gray-100">Indiehackers.com</div>
+                    <div className="text-gray-800 dark:text-gray-100">贺先生</div>
                   </div>
                 </td>
                 <td className="p-2">
@@ -167,7 +167,7 @@ function DashboardCard07() {
                   <div className="text-center">204</div>
                 </td>
                 <td className="p-2">
-                  <div className="text-center text-sky-500">3.9%</div>
+                  <div className="text-center text-sky-500">73.9%</div>
                 </td>
               </tr>
             </tbody>
