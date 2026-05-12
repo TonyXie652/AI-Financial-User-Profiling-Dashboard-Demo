@@ -22,9 +22,9 @@ function DashboardCard12() {
               </div>
               <div className="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
                 <div className="grow flex justify-between">
-                  <div className="self-center"><a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Nick Mark</a> mentioned <a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Sara Smith</a> in a new post</div>
+                  <div className="self-center"><span className="font-medium text-gray-800 dark:text-gray-100">Nick Mark</span> mentioned <span className="font-medium text-gray-800 dark:text-gray-100">Sara Smith</span> in a new post</div>
                   <div className="shrink-0 self-end ml-2">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">View<span className="hidden sm:inline"> -&gt;</span></a>
+                    <span className="font-medium text-violet-500">View<span className="hidden sm:inline"> -&gt;</span></span>
                   </div>
                 </div>
               </div>
@@ -38,9 +38,9 @@ function DashboardCard12() {
               </div>
               <div className="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
                 <div className="grow flex justify-between">
-                  <div className="self-center">The post <a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Post Name</a> was removed by <a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Nick Mark</a></div>
+                  <div className="self-center">The post <span className="font-medium text-gray-800 dark:text-gray-100">Post Name</span> was removed by <span className="font-medium text-gray-800 dark:text-gray-100">Nick Mark</span></div>
                   <div className="shrink-0 self-end ml-2">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">View<span className="hidden sm:inline"> -&gt;</span></a>
+                    <span className="font-medium text-violet-500">View<span className="hidden sm:inline"> -&gt;</span></span>
                   </div>
                 </div>
               </div>
@@ -54,9 +54,9 @@ function DashboardCard12() {
               </div>
               <div className="grow flex items-center text-sm py-2">
                 <div className="grow flex justify-between">
-                  <div className="self-center"><a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Patrick Sullivan</a> published a new <a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">post</a></div>
+                  <div className="self-center"><span className="font-medium text-gray-800 dark:text-gray-100">Patrick Sullivan</span> published a new <span className="font-medium text-gray-800 dark:text-gray-100">post</span></div>
                   <div className="shrink-0 self-end ml-2">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">View<span className="hidden sm:inline"> -&gt;</span></a>
+                    <span className="font-medium text-violet-500">View<span className="hidden sm:inline"> -&gt;</span></span>
                   </div>
                 </div>
               </div>
@@ -76,9 +76,9 @@ function DashboardCard12() {
               </div>
               <div className="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
                 <div className="grow flex justify-between">
-                  <div className="self-center"><a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">240+</a> users have subscribed to <a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Newsletter #1</a></div>
+                  <div className="self-center"><span className="font-medium text-gray-800 dark:text-gray-100">240+</span> users have subscribed to <span className="font-medium text-gray-800 dark:text-gray-100">Newsletter #1</span></div>
                   <div className="shrink-0 self-end ml-2">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">View<span className="hidden sm:inline"> -&gt;</span></a>
+                    <span className="font-medium text-violet-500">View<span className="hidden sm:inline"> -&gt;</span></span>
                   </div>
                 </div>
               </div>
@@ -92,9 +92,9 @@ function DashboardCard12() {
               </div>
               <div className="grow flex items-center text-sm py-2">
                 <div className="grow flex justify-between">
-                  <div className="self-center">The post <a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Post Name</a> was suspended by <a className="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white" href="#0">Nick Mark</a></div>
+                  <div className="self-center">The post <span className="font-medium text-gray-800 dark:text-gray-100">Post Name</span> was suspended by <span className="font-medium text-gray-800 dark:text-gray-100">Nick Mark</span></div>
                   <div className="shrink-0 self-end ml-2">
-                    <a className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">View<span className="hidden sm:inline"> -&gt;</span></a>
+                    <span className="font-medium text-violet-500">View<span className="hidden sm:inline"> -&gt;</span></span>
                   </div>
                 </div>
               </div>

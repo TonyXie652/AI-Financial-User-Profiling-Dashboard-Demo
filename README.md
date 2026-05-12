@@ -1,82 +1,296 @@
-# Free Tailwind admin dashboard template
+# AI 金融用户画像分析平台 Demo
 
-![Mosaic Tailwind admin template preview](https://github.com/cruip/tailwind-dashboard-template/assets/2683512/ef306423-3b89-4d0c-be80-9c5c682478d1)
+本项目是一个面向金融资讯平台的 **AI 用户画像分析 Dashboard Demo**，主要用于展示如何通过用户行为数据、标签体系、规则评分模型和 AI 风格解释，构建个人用户画像与群体用户画像，并通过前端可视化方式进行展示。
 
-**Mosaic Lite** is a responsive admin dashboard template built on top of Tailwind CSS and fully coded in React. It comes with several pre-coded charts (built with Chart.js 3) and widgets, and it's a great starting for anyone who wants to create a user interface for SaaS products, administrator dashboards, modern web apps, and more.
+项目基于 **Mosaic Lite / 马赛克轻量版后台模板** 进行二次开发。Mosaic Lite 是一个基于 **React / React 前端框架** 和 **Tailwind CSS / Tailwind 样式框架** 构建的免费后台管理模板，适合作为 SaaS 产品、管理后台、数据看板和现代 Web 应用的起点。
 
-**UPDATE 2025-02-02** Added Tailwind v4 support!
+> 当前项目仅作为内部展示、学习交流和实习 Demo 使用，暂未接入真实外部 AI API，页面中的用户数据、评分结果和 AI 分析内容均为模拟数据。
 
-Use it for whatever you want, and be sure to reach us out on [Twitter](https://twitter.com/Cruip_com) if you build anything cool/useful with it.
+---
 
-Created and maintained with ❤️ by [Cruip.com](https://cruip.com/).
+## 项目背景
 
-## Live demo
+金融资讯类平台通常会积累大量用户行为数据，例如资讯浏览、研报阅读、资产关注、收藏行为、AI 工具使用、会员页面访问等。
 
-Check the live demo here 👉️ [https://mosaic.cruip.com/](https://mosaic.cruip.com/)
+传统用户标签系统往往只停留在静态标签层面，例如：
 
-## Mosaic Pro
+- A 股关注者
+- 基金偏好用户
+- 高活跃用户
+- 研报深度用户
+- 流失风险用户
 
-[![Mosaic Tailwind Admin Template](https://github.com/cruip/tailwind-dashboard-template/assets/2683512/2b4d0fae-bb07-4229-8a8a-48005f2f33cb)](https://cruip.com/mosaic/)
+而本项目尝试在传统标签基础上进一步升级，设计一个更直观、更可解释的用户画像系统：
 
-## Design files
+- 用雷达图展示个人用户的多维价值
+- 用标签体系描述用户兴趣、偏好和行为特征
+- 用群体画像分析不同用户人群包
+- 用数据图表展示平台整体用户价值分布
+- 用 AI 风格解释模拟用户归因、推荐策略和运营建议
 
-If you need the design files, you can download them from Figma's Community 👉 https://bit.ly/3sigqHe
+---
 
-## Table of contents
+## 项目目标
 
-* [Usage](#usage)
-  * [Project setup](#project-setup)
-  * [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
-  * [Compiles and minifies for production](#compiles-and-minifies-for-production)
-  * [Customize configuration](#customize-configuration)
-* [Support notes](#support-notes)            
-* [Credits](#credits)
-* [Terms and License](#terms-and-license)
-* [About Us](#about-us)
-* [Stay in the loop](#stay-in-the-loop)
+本项目主要目标包括：
 
-## Usage
+1. 设计一套适用于金融资讯平台的个人用户画像标签体系
+2. 设计一套适用于群体用户分析的人群标签体系
+3. 构建一个前端 Dashboard Demo
+4. 通过图表、表格、标签卡片等方式展示用户价值
+5. 模拟 AI 对用户行为的解释、归因和运营建议
+6. 为后续接入真实后端接口和 AI API 留出扩展空间
 
-This project was bootstrapped with [Vite](https://vitejs.dev/).
+---
 
-### Project setup
+## 核心功能模块
+
+### 1. 首页总览 / Dashboard Overview
+
+首页用于展示平台整体用户价值概况，包括：
+
+- 总用户数
+- 高价值用户数量
+- 中价值用户数量
+- 低价值用户数量
+- 流失风险用户数量
+- AI 已分析用户数量
+- 用户价值分布图
+- 标签占比图
+- 重点人群包入口
+- AI 总览分析卡片
+
+首页的定位是让用户快速了解平台当前用户结构和运营重点。
+
+---
+
+### 2. 个人画像 / Individual User Profile
+
+个人画像页面用于分析单个用户的多维价值。
+
+核心设计包括：
+
+- 用户基础信息卡片
+- 综合价值评分
+- 多维用户价值雷达图
+- 点击雷达图维度查看详细解释
+- 事实行为数据展示
+- AI 风格分析解释
+- AI 生成标签
+- 个性化运营建议
+
+个人画像维度包括：
+
+1. 活跃价值
+2. 内容深度价值
+3. 资产偏好清晰度
+4. 商业转化潜力
+5. 风险敏感度
+6. AI 使用成熟度
+7. 留存稳定性
+
+其中，各维度分数由模拟行为数据和规则评分模型计算得出；AI 分析模块主要用于模拟解释、归因、用户类型总结和运营建议生成。
+
+---
+
+### 3. 群体画像 / Group User Profile
+
+群体画像页面用于展示不同用户人群包的整体特征。
+
+示例人群包括：
+
+- 高价值研究型用户
+- 宏观政策关注用户
+- 基金配置偏好用户
+- 短线交易型用户
+- AI 工具高频用户
+- 流失风险用户
+- 低活跃可唤醒用户
+
+每个人群包可以展示：
+
+- 人群规模
+- 平均用户价值分
+- 主要标签
+- 资产偏好分布
+- 内容兴趣分布
+- 行为活跃情况
+- AI 群体总结
+- 推荐运营策略
+
+---
+
+### 4. 标签体系 / Tag System
+
+标签体系页面用于展示本项目设计的用户标签结构。
+
+主要标签类别包括：
+
+- 基础身份标签
+- 内容兴趣标签
+- 资产偏好标签
+- 投资风格标签
+- 行为活跃标签
+- 工具使用标签
+- 商业价值标签
+- 风险关注标签
+- AI 使用标签
+- 留存风险标签
+
+该模块用于说明系统如何从用户行为数据中抽象出可解释的标签体系。
+
+---
+
+### 5. 数据分析 / Data Analytics
+
+数据分析页面用于展示平台整体数据统计与趋势。
+
+可以包含：
+
+- 用户价值分布柱状图
+- 用户标签占比饼图
+- 资产偏好分布图
+- 内容兴趣趋势图
+- 用户活跃度趋势图
+- 转化漏斗图
+- 留存与流失分析图
+- 高价值用户列表
+- 风险用户列表
+
+该模块更偏向整体统计分析，用于辅助产品和运营人员理解平台用户结构。
+
+---
+
+### 6. 模型设置 / Model Settings
+
+模型设置页面用于展示评分模型和 AI 分析模块的配置思路。
+
+可以包括：
+
+- 评分维度配置
+- 各维度权重配置
+- 标签规则说明
+- AI 分析提示词说明
+- 数据源配置占位
+- 隐私与解释说明
+
+当前 Demo 中，模型设置仅作为展示功能，不连接真实后端。
+
+---
+
+## AI 模块说明
+
+当前项目暂未接入真实 AI API。
+
+Demo 中的 AI 分析内容主要通过以下方式模拟：
+
+```text
+模拟用户行为数据
+        ↓
+规则评分模型
+        ↓
+用户标签生成
+        ↓
+AI 风格解释文本
+        ↓
+运营建议展示
 ```
-npm install
-```
 
-#### Compiles and hot-reloads for development
-```
-npm run dev
-```
+## 技术栈
 
-#### Compiles and minifies for production
-```
-npm run build
-```
+本项目基于以下技术构建：
 
-#### Customize configuration
-See [Configuration Reference](https://vitejs.dev/guide/).
+ - React / React 前端框架
+ - Vite / 前端构建工具
+ - Tailwind CSS / Tailwind 样式框架
+ - Chart.js / 图表库
+ - Mosaic Lite / 马赛克轻量版后台模板
 
-### Support notes
-We are shipping our templates with a very basic React configuration to let you quickly get into the development process, but we don't discourage you from using any other configuration or framework built on the top of React. So, please note that any request dealing with React (e.g. extra features, customisations, et cetera) is to be considered out of the support scope.
+后续可以根据需求扩展：
 
-For more information about what support covers, please see our (FAQs)[https://cruip.com/faq/].
+ - Recharts / React 图表库
+ - Ant Design / 企业级 UI 组件库
+ - Axios / HTTP 请求库
+ - React Router / 前端路由库
+ - Node.js / 后端运行环境
+ - Express / Node 后端框架
+ - OpenAI API 或 Claude API / AI 模型接口
 
-## Credits
+## 项目运行方式
 
-- [Nucleo](https://nucleoapp.com/)
+1. 安装依赖
 
-## Terms and License
+  npm install
 
-- Released under the [GPL](https://www.gnu.org/licenses/gpl-3.0.html).
-- Copyright 2020 [Cruip](https://cruip.com/).
-- Use it for personal and commercial projects, but please don’t republish, redistribute, or resell the template.
-- Attribution is not required, although it is really appreciated.
+2. 启动开发环境
 
-## About Us
+  npm run dev
 
-We're an Italian developer/designer duo creating high-quality design/code resources for developers, makers, and startups.
+  启动后，在浏览器中打开终端显示的本地地址
 
-## Stay in the loop
+3. 构建生产版本
 
-If you would like to know when we release new resources, you can follow [@pacovitiello](https://x.com/pacovitiello) and [@DavidePacilio](https://x.com/DavidePacilio) on X, or you can subscribe to our [newsletter](https://cruip.com/newsletter/).
+  npm run build
+
+## Demo 数据说明
+
+当前项目使用 mock 数据进行展示。
+
+示例用户数据包括：
+
+用户 ID
+用户类型
+综合价值评分
+活跃价值
+内容深度价值
+资产偏好清晰度
+商业转化潜力
+风险敏感度
+AI 使用成熟度
+留存稳定性
+用户标签
+行为数据
+AI 分析解释
+运营建议
+
+这些数据仅用于展示页面结构和交互逻辑，不代表真实用户数据。
+
+## 与 Mosaic Lite 的关系
+
+本项目基于 Mosaic Lite / 马赛克轻量版后台模板 进行二次开发。
+
+Mosaic Lite 是由 Cruip / Cruip 设计开发团队 创建和维护的免费后台管理模板，原项目使用 React / React 前端框架、Tailwind CSS / Tailwind 样式框架 和 Chart.js / 图表库 构建。
+
+本项目在其基础上进行了业务场景改造，主要改造方向包括：
+
+将原后台模板改造为金融用户画像分析平台
+新增个人画像和群体画像业务结构
+新增用户价值评分和标签体系展示
+新增 AI 风格分析解释模块
+新增适用于金融资讯平台的 Dashboard 内容
+
+## 许可证说明
+
+原模板 Mosaic Lite / 马赛克轻量版 基于 GPL License / GPL 开源许可证 发布。
+
+根据原项目 README 说明：
+
+可用于个人项目
+可用于商业项目
+不需要强制署名，但保留署名更友好
+不应将原模板本身重新发布、重新分发或转售
+
+本项目仅用于内部展示、学习交流和实习 Demo，不用于模板转售或重新分发。
+
+## 致谢
+
+本项目基于以下开源或免费资源进行开发：
+
+Mosaic Lite / 马赛克轻量版后台模板
+Cruip / Cruip 设计开发团队
+React / React 前端框架
+Tailwind CSS / Tailwind 样式框架
+Chart.js / 图表库
+Vite / 前端构建工具
+
+感谢开源社区和模板作者提供的高质量前端资源。

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Routes,
   Route,
@@ -11,23 +11,52 @@ import './charts/ChartjsConfig';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
+import BlankPage from './pages/BlankPage';
+import Sidebar from './partials/Sidebar';
+import { useElasticScroll } from './utils/useElasticScroll';
 
 function App() {
 
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const {
+    elasticOffset,
+    handleElasticWheel,
+    resetElasticOffset,
+    scrollRef: scrollAreaRef,
+  } = useElasticScroll({ maxOffset: 36, strength: 0.16 });
 
   useEffect(() => {
     document.querySelector('html').style.scrollBehavior = 'auto'
-    window.scroll({ top: 0 })
+    scrollAreaRef.current?.scrollTo({ top: 0 })
+    resetElasticOffset()
     document.querySelector('html').style.scrollBehavior = ''
   }, [location.pathname]); // triggered on route change
 
   return (
-    <>
-      <Routes>
-        <Route exact path="/" element={<Dashboard />} />
-      </Routes>
-    </>
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <div
+        ref={scrollAreaRef}
+        onWheel={handleElasticWheel}
+        className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden scroll-smooth"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        <div
+          className="flex min-h-full flex-col transition-transform duration-300 ease-out"
+          style={{ transform: `translateY(${elasticOffset}px)` }}
+        >
+          <Routes>
+            <Route exact path="/" element={<Dashboard sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />} />
+            <Route path="/personal-profile" element={<BlankPage />} />
+            <Route path="/group-profile" element={<BlankPage />} />
+            <Route path="/tag-system" element={<BlankPage />} />
+            <Route path="/data-analysis" element={<BlankPage />} />
+            <Route path="/model-settings" element={<BlankPage />} />
+          </Routes>
+        </div>
+      </div>
+    </div>
   );
 }
 
