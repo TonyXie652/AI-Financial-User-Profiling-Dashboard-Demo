@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LineChart from '../../charts/LineChart01';
-import { chartAreaGradient } from '../../charts/ChartjsConfig';
 import EditMenu from '../../components/DropdownEditMenu';
-
-// Import utilities
-import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
+import { createKpiSparklineDataset, KPI_SPARKLINE_DIMENSIONS } from './dashboardChartConfig';
 
 function DashboardCard03() {
 
@@ -22,34 +19,12 @@ function DashboardCard03() {
       '12-01-2024', '01-01-2025',
     ],
     datasets: [
-      // Indigo line
-      {
-        data: [
+      createKpiSparklineDataset([
           6680, 6920, 7210, 7480, 7760, 8020, 8270,
           8460, 8680, 8890, 9060, 9240, 9380, 9490,
           9610, 9740, 9880, 10040, 9860, 9720, 9540,
           9680, 9820, 9900, 9940, 9962,
-        ],
-        fill: true,
-        backgroundColor: function(context) {
-          const chart = context.chart;
-          const {ctx, chartArea} = chart;
-          return chartAreaGradient(ctx, chartArea, [
-            { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
-            { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) }
-          ]);
-        },       
-        borderColor: getCssVariable('--color-violet-500'),
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: getCssVariable('--color-violet-500'),
-        pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,          
-        clip: 20,
-        tension: 0.2,
-      },
+        ]),
     ],
   };
 
@@ -86,7 +61,11 @@ function DashboardCard03() {
       {/* Chart built with Chart.js 3 */}
       <div className="grow max-sm:max-h-[112px] xl:max-h-[112px]">
         {/* Change the height attribute to adjust the chart height */}
-        <LineChart data={chartData} width={389} height={112} />
+        <LineChart
+          data={chartData}
+          width={KPI_SPARKLINE_DIMENSIONS.width}
+          height={KPI_SPARKLINE_DIMENSIONS.height}
+        />
       </div>
       <div className="px-5 pb-5 pt-2 space-y-2">
         <div className="flex items-center justify-between rounded-md bg-gray-50 px-3 py-2 text-[11px] font-semibold whitespace-nowrap text-gray-800 dark:bg-gray-700/40 dark:text-gray-100">

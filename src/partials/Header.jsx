@@ -104,11 +104,88 @@ function TimeRangeDropdown({ value, onChange }) {
   );
 }
 
+function HeaderSearch({
+  placeholder,
+  value,
+  onChange,
+  suggestions = [],
+  onSuggestionSelect,
+}) {
+  const [isFocused, setIsFocused] = useState(false);
+  const hasSuggestions = isFocused && suggestions.length > 0;
+
+  return (
+    <div
+      className="relative block"
+      onFocus={() => setIsFocused(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setIsFocused(false);
+        }
+      }}
+    >
+      <label className="block">
+        <span className="sr-only">{placeholder}</span>
+        <svg
+          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-current text-gray-400 dark:text-gray-500"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+        >
+          <path d="M7 1a6 6 0 1 0 3.74 10.69l2.79 2.78a.75.75 0 1 0 1.06-1.06l-2.78-2.79A6 6 0 0 0 7 1ZM2.5 7a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Z" />
+        </svg>
+        <input
+          type="search"
+          value={value}
+          onChange={(event) => {
+            setIsFocused(true);
+            onChange(event);
+          }}
+          placeholder={placeholder}
+          autoComplete="off"
+          className={`h-8 w-52 border border-gray-200 bg-white pl-9 pr-3 text-sm text-gray-700 shadow-xs outline-hidden transition-colors duration-200 placeholder:text-gray-400 focus:border-blue-500 focus:ring-0 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 sm:w-72 lg:w-96 ${
+            hasSuggestions ? 'rounded-t-2xl rounded-b-md' : 'rounded-full'
+          }`}
+        />
+      </label>
+
+      {hasSuggestions && (
+        <div
+          className="absolute left-0 right-0 top-[calc(100%+4px)] z-30 overflow-hidden rounded-2xl border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+          role="listbox"
+        >
+          {suggestions.map((user) => (
+            <button
+              key={user.id}
+              type="button"
+              className="flex w-full items-center justify-between px-3.5 py-2.5 text-left text-sm transition-colors duration-150 hover:bg-blue-50 dark:hover:bg-gray-700/70"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                onSuggestionSelect?.(user);
+                setIsFocused(false);
+              }}
+            >
+              <span className="font-medium text-gray-800 dark:text-gray-100">{user.name}</span>
+              <span className="text-xs font-semibold text-gray-400 dark:text-gray-500">{user.id}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Header({
   sidebarOpen,
   setSidebarOpen,
   timeRange = '30d',
   setTimeRange,
+  searchPlaceholder,
+  searchValue,
+  onSearchChange,
+  searchSuggestions,
+  onSearchSuggestionSelect,
+  currentUserName,
+  currentUserType,
   variant = 'default',
 }) {
   return (
@@ -116,7 +193,7 @@ function Header({
       <div className="px-4 sm:px-6 lg:px-8">
         <div className={`flex items-center justify-between h-16 ${variant === 'v2' || variant === 'v3' ? '' : 'lg:border-b border-gray-200 dark:border-gray-700/60'}`}>
 
-          <div className="flex">
+          <div className="flex items-center gap-4">
             <button
               className="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 lg:hidden"
               aria-controls="sidebar"
@@ -130,11 +207,29 @@ function Header({
                 <rect x="4" y="17" width="16" height="2" />
               </svg>
             </button>
+            {currentUserName && (
+              <div className="flex items-center gap-2 text-sm font-bold text-gray-800 dark:text-gray-100 sm:text-base">
+                <span>当前用户：{currentUserName}</span>
+                {currentUserType && (
+                  <span className="rounded-full bg-blue-50 px-2.5 py-1 ml-3 mt-1 text-xs font-bold text-blue-700 ring-1 ring-blue-100 dark:bg-blue-500/15 dark:text-blue-200 dark:ring-blue-400/20">
+                    {currentUserType}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="flex items-center space-x-3">
             <Notifications align="right" />
-            {setTimeRange && (
+            {searchPlaceholder ? (
+              <HeaderSearch
+                placeholder={searchPlaceholder}
+                value={searchValue}
+                onChange={onSearchChange}
+                suggestions={searchSuggestions}
+                onSuggestionSelect={onSearchSuggestionSelect}
+              />
+            ) : setTimeRange && (
               <TimeRangeDropdown value={timeRange} onChange={setTimeRange} />
             )}
             <Help align="right" />

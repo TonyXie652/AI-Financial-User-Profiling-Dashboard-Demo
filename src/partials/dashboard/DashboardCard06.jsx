@@ -7,6 +7,26 @@ const financePalette = {
   slateGray: '#475569',
 };
 
+const DEFAULT_TIME_RANGE = '30d';
+const DEFAULT_ACTIVE_GROUP = '用户价值';
+const KPI_VALUE_MIN = 18;
+const KPI_VALUE_MAX = 80;
+const INVERTED_TREND_STEP = -2;
+const EVEN_POINT_DRIFT = 0;
+const ODD_POINT_DRIFT = 2;
+const FORECAST_OVERLAP_POINTS = 1;
+const TREND_LINE_BORDER_WIDTH = 2;
+const TREND_POINT_RADIUS = 0;
+const TREND_POINT_HOVER_RADIUS = 4;
+const TREND_POINT_BORDER_WIDTH = 0;
+const TREND_CHART_CLIP_PADDING = 20;
+const TREND_LINE_TENSION = 0.35;
+const FORECAST_BORDER_DASH = [6, 5];
+const KPI_TREND_CHART_DIMENSIONS = {
+  width: 595,
+  height: 248,
+};
+
 const timeRangeConfig = {
   '7d': {
     label: '近7天',
@@ -148,12 +168,16 @@ const kpiGroups = {
 };
 
 function clampValue(value) {
-  return Math.max(18, Math.min(80, value));
+  return Math.max(KPI_VALUE_MIN, Math.min(KPI_VALUE_MAX, value));
 }
 
 function applyMetricShape(values, item) {
   return values.map((value, index) => {
-    const drift = item.invert ? index * -2 : index % 2 === 0 ? 0 : 2;
+    const drift = item.invert
+      ? index * INVERTED_TREND_STEP
+      : index % 2 === 0
+        ? EVEN_POINT_DRIFT
+        : ODD_POINT_DRIFT;
     return clampValue(value + item.offset + drift);
   });
 }
@@ -165,20 +189,20 @@ function createTrendDatasets(item, rangeConfig) {
   const shapedForecast = applyMetricShape(baseSeries.forecast, item);
   const forecast = [
     history[history.length - 1],
-    ...shapedForecast.slice(1),
+    ...shapedForecast.slice(FORECAST_OVERLAP_POINTS),
   ];
-  const forecastOffset = history.length - 1;
+  const forecastOffset = history.length - FORECAST_OVERLAP_POINTS;
   const baseOptions = {
     fill: false,
-    borderWidth: 2,
-    pointRadius: 0,
-    pointHoverRadius: 4,
+    borderWidth: TREND_LINE_BORDER_WIDTH,
+    pointRadius: TREND_POINT_RADIUS,
+    pointHoverRadius: TREND_POINT_HOVER_RADIUS,
     pointBackgroundColor: item.color,
     pointHoverBackgroundColor: item.color,
-    pointBorderWidth: 0,
-    pointHoverBorderWidth: 0,
-    clip: 20,
-    tension: 0.35,
+    pointBorderWidth: TREND_POINT_BORDER_WIDTH,
+    pointHoverBorderWidth: TREND_POINT_BORDER_WIDTH,
+    clip: TREND_CHART_CLIP_PADDING,
+    tension: TREND_LINE_TENSION,
     spanGaps: false,
   };
 
@@ -204,15 +228,15 @@ function createTrendDatasets(item, rangeConfig) {
         ...forecast,
       ],
       borderColor: item.color,
-      borderDash: [6, 5],
+      borderDash: FORECAST_BORDER_DASH,
     },
   ];
 }
 
-function DashboardCard06({ timeRange = '30d' }) {
-  const [activeGroup, setActiveGroup] = useState('用户价值');
+function DashboardCard06({ timeRange = DEFAULT_TIME_RANGE }) {
+  const [activeGroup, setActiveGroup] = useState(DEFAULT_ACTIVE_GROUP);
   const activeLines = kpiGroups[activeGroup];
-  const rangeConfig = timeRangeConfig[timeRange] || timeRangeConfig['30d'];
+  const rangeConfig = timeRangeConfig[timeRange] || timeRangeConfig[DEFAULT_TIME_RANGE];
 
   const chartData = useMemo(() => ({
     labels: rangeConfig.labels,
@@ -256,8 +280,8 @@ function DashboardCard06({ timeRange = '30d' }) {
       <LineChart
         data={chartData}
         timeUnit={rangeConfig.unit}
-        width={595}
-        height={248}
+        width={KPI_TREND_CHART_DIMENSIONS.width}
+        height={KPI_TREND_CHART_DIMENSIONS.height}
       />
     </div>
   );

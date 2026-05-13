@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Routes,
   Route,
@@ -11,7 +11,11 @@ import './charts/ChartjsConfig';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
-import BlankPage from './pages/BlankPage';
+import PersonalProfile from './pages/Personal_profile';
+import GroupProfile from './pages/Group_profile';
+import TagSystem from './pages/Tag_system';
+import DataAnalysis from './pages/Data_analysis';
+import ModelSettings from './pages/Model_settings';
 import Sidebar from './partials/Sidebar';
 import { useElasticScroll } from './utils/useElasticScroll';
 
@@ -20,6 +24,8 @@ function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [timeRange, setTimeRange] = useState('30d');
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollHideTimerRef = useRef(null);
   const {
     elasticOffset,
     handleElasticWheel,
@@ -34,13 +40,26 @@ function App() {
     document.querySelector('html').style.scrollBehavior = ''
   }, [location.pathname]); // triggered on route change
 
+  useEffect(() => {
+    return () => window.clearTimeout(scrollHideTimerRef.current);
+  }, []);
+
+  const handleMainScroll = () => {
+    setIsScrolling(true);
+    window.clearTimeout(scrollHideTimerRef.current);
+    scrollHideTimerRef.current = window.setTimeout(() => {
+      setIsScrolling(false);
+    }, 700);
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div
         ref={scrollAreaRef}
         onWheel={handleElasticWheel}
-        className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden scroll-smooth"
+        onScroll={handleMainScroll}
+        className={`app-scrollbar relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden scroll-smooth ${isScrolling ? 'is-scrolling' : ''}`}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         <div
@@ -60,11 +79,19 @@ function App() {
                 />
               )}
             />
-            <Route path="/personal-profile" element={<BlankPage />} />
-            <Route path="/group-profile" element={<BlankPage />} />
-            <Route path="/tag-system" element={<BlankPage />} />
-            <Route path="/data-analysis" element={<BlankPage />} />
-            <Route path="/model-settings" element={<BlankPage />} />
+            <Route
+              path="/personal-profile"
+              element={(
+                <PersonalProfile
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                />
+              )}
+            />
+            <Route path="/group-profile" element={<GroupProfile />} />
+            <Route path="/tag-system" element={<TagSystem />} />
+            <Route path="/data-analysis" element={<DataAnalysis />} />
+            <Route path="/model-settings" element={<ModelSettings />} />
           </Routes>
         </div>
       </div>

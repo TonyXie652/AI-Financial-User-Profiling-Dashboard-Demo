@@ -43,20 +43,15 @@ function Dashboard({ sidebarOpen, setSidebarOpen, timeRange, setTimeRange }) {
             <DashboardCard01 />
             <DashboardCard02 />
             <DashboardCard03 />
-
             {/* 2. AI画像引擎运行概览 */}
             <DashboardCard09 />
-
             {/* 3. KPI统计折线图 */}
             <DashboardCard06 timeRange={timeRange} />
-
             {/* 4. 核心人群洞察 + AI总结分析 */}
             <DashboardCard07 />
             <DashboardCard08 />
-
             {/* 补充分布视图：弱化并下移 */}
             <DashboardCard04 />
-
             {/* 5. 后台AI重点关注用户 */}
             <DashboardCard05 />
           </div>
