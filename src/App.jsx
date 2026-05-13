@@ -19,6 +19,7 @@ function App() {
 
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [timeRange, setTimeRange] = useState('30d');
   const {
     elasticOffset,
     handleElasticWheel,
@@ -47,7 +48,18 @@ function App() {
           style={{ transform: `translateY(${elasticOffset}px)` }}
         >
           <Routes>
-            <Route exact path="/" element={<Dashboard sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />} />
+            <Route
+              exact
+              path="/"
+              element={(
+                <Dashboard
+                  sidebarOpen={sidebarOpen}
+                  setSidebarOpen={setSidebarOpen}
+                  timeRange={timeRange}
+                  setTimeRange={setTimeRange}
+                />
+              )}
+            />
             <Route path="/personal-profile" element={<BlankPage />} />
             <Route path="/group-profile" element={<BlankPage />} />
             <Route path="/tag-system" element={<BlankPage />} />

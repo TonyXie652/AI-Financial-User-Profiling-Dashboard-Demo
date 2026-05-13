@@ -1,175 +1,98 @@
 import React from 'react';
 
+const focusedUsers = [
+  {
+    name: '王女士',
+    level: '高价值',
+    churnRisk: '25.3%',
+    basis: '服务剩余时间小于7天，未查看续费权益',
+    action: '推送续费提醒',
+  },
+  {
+    name: '孙先生',
+    level: '中价值',
+    churnRisk: '31.7%',
+    basis: '内容浏览稳定，付费转化意愿偏弱',
+    action: '推送入门体验包',
+  },
+  {
+    name: '谷先生',
+    level: '中价值',
+    churnRisk: '38.6%',
+    basis: '咨询点击率高，但停留时间较短',
+    action: '优化推荐内容',
+  },
+  {
+    name: '刘女士',
+    level: '成长型',
+    churnRisk: '17.5%',
+    basis: '使用频率上升，开始关注深度研报',
+    action: '推荐研报解读',
+  },
+  {
+    name: '贺先生',
+    level: '中高价值',
+    churnRisk: '27.8%',
+    basis: '高频查看行情，较少使用分析工具',
+    action: '推荐智能选股',
+  },
+  {
+    name: '陈女士',
+    level: '潜在高价值',
+    churnRisk: '22.4%',
+    basis: '近14天自选资产数量增加，研报阅读完成率高',
+    action: '推送会员试用',
+  },
+];
+
 function DashboardCard05() {
   return (
-    <div className="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-xs rounded-xl">
+    <div className="col-span-full xl:col-span-8 bg-white hover:bg-blue-50/40 dark:bg-gray-900 dark:hover:bg-white/[0.04] shadow-xs dark:shadow-[0_12px_28px_rgba(0,0,0,0.26)] rounded-xl transition-colors duration-300">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">AI重点关注用户表格</h2>
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">后台AI重点关注用户</h2>
       </header>
       <div className="p-3">
-        {/* Table */}
         <div className="overflow-x-auto">
-          <table className="table-auto w-full dark:text-gray-300">
-            {/* Table header */}
-            <thead className="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50 rounded-xs">
+          <table className="table-fixed w-full dark:text-gray-300">
+            <thead className="text-xs font-semibold text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700/50">
               <tr>
-                <th className="p-2">
-                  <div className="font-semibold text-left">用户姓名</div>
+                <th className="w-[26%] px-3 py-3">
+                  <div className="text-left">用户</div>
                 </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">价值等级</div>
+                <th className="w-[24%] px-3 py-3">
+                  <div className="text-left">价值等级</div>
                 </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">流失概率</div>
+                <th className="w-[20%] px-3 py-3">
+                  <div className="text-left">风险概率</div>
                 </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">关键行为</div>
-                </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">AI建议</div>
+                <th className="w-[30%] px-3 py-3">
+                  <div className="text-left">推荐动作</div>
                 </th>
               </tr>
             </thead>
-            {/* Table body */}
-            <tbody className="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#24292E" cx="18" cy="18" r="18" />
-                      <path
-                        d="M18 10.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V24c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z"
-                        fill="#FFF"
-                      />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">王女士</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">高价值</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">25.3%</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">服务剩余时间小于7天，未查看续费权益</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">推送续费提醒，突出限时优惠</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#1877F2" cx="18" cy="18" r="18" />
-                      <path
-                        d="M16.023 26 16 19h-3v-3h3v-2c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V16H23l-1 3h-2.72v7h-3.257Z"
-                        fill="#FFF"
-                        fillRule="nonzero"
-                      />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">孙先生</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">中价值</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">31.7%</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">内容浏览稳定，付费转化意愿弱</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">推送低门槛体验包或试用权益</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#EA4335" cx="18" cy="18" r="18" />
-                      <path
-                        d="M18 17v2.4h4.1c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C21.6 11.7 20 11 18.1 11c-3.9 0-7 3.1-7 7s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H18z"
-                        fill="#FFF"
-                        fillRule="nonzero"
-                      />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">谷先生</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">中价值</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">38.6%</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">咨询点击率高，但停留时间短</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">优化推荐内容，优先推送热点解读</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#4BC9FF" cx="18" cy="18" r="18" />
-                      <path
-                        d="M26 14.3c-.1 1.6-1.2 3.7-3.3 6.4-2.2 2.8-4 4.2-5.5 4.2-.9 0-1.7-.9-2.4-2.6C14 19.9 13.4 15 12 15c-.1 0-.5.3-1.2.8l-.8-1c.8-.7 3.5-3.4 4.7-3.5 1.2-.1 2 .7 2.3 2.5.3 2 .8 6.1 1.8 6.1.9 0 2.5-3.4 2.6-4 .1-.9-.3-1.9-2.3-1.1.8-2.6 2.3-3.8 4.5-3.8 1.7.1 2.5 1.2 2.4 3.3z"
-                        fill="#FFF"
-                        fillRule="nonzero"
-                      />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">刘女士</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">成长型</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">17.5%</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">使用频率上升，开始关注深度研报</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">推荐研报深度解读内容</div>
-                </td>
-              </tr>
-              {/* Row */}
-              <tr>
-                <td className="p-2">
-                  <div className="flex items-center">
-                    <svg className="shrink-0 mr-2 sm:mr-3" width="36" height="36" viewBox="0 0 36 36">
-                      <circle fill="#0E2439" cx="18" cy="18" r="18" />
-                      <path
-                        d="M14.232 12.818V23H11.77V12.818h2.46zM15.772 23V12.818h2.462v4.087h4.012v-4.087h2.456V23h-2.456v-4.092h-4.012V23h-2.461z"
-                        fill="#E6ECF4"
-                      />
-                    </svg>
-                    <div className="text-gray-800 dark:text-gray-100">贺先生</div>
-                  </div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">中高价值</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-green-500">27.8%</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center">高频查看行情，较少使用分析工具</div>
-                </td>
-                <td className="p-2">
-                  <div className="text-center text-sky-500">推荐智能选股/行情预测功能</div>
-                </td>
-              </tr>
+            <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
+              {focusedUsers.map((user) => (
+                <tr key={user.name}>
+                  <td className="px-3 py-4">
+                    <div className="font-semibold text-gray-800 dark:text-gray-100">{user.name}</div>
+                  </td>
+                  <td className="px-3 py-4">
+                    <div className="font-medium text-gray-700 dark:text-gray-300">{user.level}</div>
+                  </td>
+                  <td className="px-3 py-4">
+                    <div className="font-semibold text-red-600 dark:text-red-400">{user.churnRisk}</div>
+                  </td>
+                  <td className="px-3 py-4">
+                    <span
+                      className="font-medium text-violet-600 transition-colors duration-200 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+                      title={`AI判断依据：${user.basis}`}
+                      aria-label={`${user.action}，AI判断依据：${user.basis}`}
+                    >
+                      {user.action}
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

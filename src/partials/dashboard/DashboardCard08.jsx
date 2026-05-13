@@ -3,28 +3,29 @@ import React from 'react';
 function DashboardCard08() {
   const insights = [
     {
-      label: '总体判断',
-      text: '当前总用户数为 55,429 人，高价值用户 17,489 人，占比约 32%，整体用户质量保持在较高水平。',
+      label: '模型发现',
+      text: '高活跃低转化用户上升6.8%，用户频繁查看行情，但较少使用分析工具。',
     },
     {
-      label: '增长机会',
-      text: '系统识别出新增潜力高价值用户 621 人，建议优先推送进阶产品、会员权益和个性化资产配置方案。',
+      label: '隐性风险',
+      text: '部分用户从“深度分析”退化为“只看行情”，存在早期流失信号。',
     },
     {
-      label: '风险预警',
-      text: '流失风险用户为 9,962 人，占比约 18%，未来 7 天预计有 123 人进入高风险流失状态，需要触发挽回策略。',
+      label: '推荐动作',
+      text: '优先对潜在高价值用户推送进阶产品，对流失风险用户推送权益提醒。',
+    },
+    {
+      label: '预期收益',
+      text: '工具复用预测 +12%，付费转化率预计提升 4%–7%。',
     },
   ];
 
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-gray-800 shadow-xs rounded-xl transition-colors duration-500">
+    <div className="flex flex-col col-span-full sm:col-span-6 bg-white hover:bg-blue-50/40 dark:bg-gray-900 dark:hover:bg-white/[0.04] shadow-xs dark:shadow-[0_12px_28px_rgba(0,0,0,0.26)] rounded-xl transition-colors duration-300">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">AI总览分析</h2>
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">AI总结分析</h2>
       </header>
       <div className="px-5 py-4 space-y-4">
-        <p className="text-sm leading-6 text-gray-600 dark:text-gray-300">
-          AI 综合用户画像、价值分层和流失风险后判断：当前用户规模与结构保持稳定，短期增长重点应放在潜力高价值用户转化和风险用户召回上。
-        </p>
         <div className="space-y-3">
           {insights.map((item) => (
             <div key={item.label} className="rounded-lg bg-gray-50 p-3 dark:bg-gray-700/40">

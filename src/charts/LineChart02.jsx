@@ -14,6 +14,7 @@ Chart.register(LineController, LineElement, Filler, PointElement, LinearScale, T
 
 function LineChart02({
   data,
+  timeUnit = 'month',
   width,
   height
 }) {
@@ -23,7 +24,7 @@ function LineChart02({
   const legend = useRef(null);
   const { currentTheme } = useThemeProvider();
   const darkMode = currentTheme === 'dark';
-  const { textColor, gridColor, tooltipBodyColor, tooltipBgColor, tooltipBorderColor } = chartColors;  
+  const { textColor, gridColor, tooltipBodyColor, tooltipBgColor, tooltipBorderColor } = chartColors;
 
   useEffect(() => {
     const ctx = canvas.current;
@@ -43,8 +44,9 @@ function LineChart02({
               display: false,
             },
             beginAtZero: true,
+            max: 80,
             ticks: {
-              maxTicksLimit: 5,
+              stepSize: 20,
               callback: (value) => formatThousands(value),
               color: darkMode ? textColor.dark : textColor.light,
             },
@@ -56,8 +58,10 @@ function LineChart02({
             type: 'time',
             time: {
               parser: 'MM-DD-YYYY',
-              unit: 'month',
+              unit: timeUnit,
               displayFormats: {
+                day: 'MMM D',
+                week: 'MMM D',
                 month: 'MMM YY',
               },
             },
@@ -81,7 +85,11 @@ function LineChart02({
           tooltip: {
             callbacks: {
               title: () => false, // Disable tooltip title
-              label: (context) => formatThousands(context.parsed.y),
+              label: (context) => {
+                const metric = context.dataset.metricLabel || context.dataset.label;
+                const segment = context.dataset.segmentLabel ? ` · ${context.dataset.segmentLabel}` : '';
+                return `${metric}${segment}: ${formatThousands(context.parsed.y)}`;
+              },
             },
             bodyColor: darkMode ? tooltipBodyColor.dark : tooltipBodyColor.light,
             backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,
@@ -92,53 +100,114 @@ function LineChart02({
           intersect: false,
           mode: 'nearest',
         },
+        transitions: {
+          show: {
+            animations: {
+              opacity: {
+                from: 0,
+                to: 1,
+                duration: 420,
+                easing: 'easeOutCubic',
+              },
+              y: {
+                from: (context) => context.chart.scales.y.getPixelForValue(0),
+                duration: 450,
+                easing: 'easeOutCubic',
+              },
+            },
+          },
+          hide: {
+            animations: {
+              opacity: {
+                to: 0,
+                duration: 320,
+                easing: 'easeInCubic',
+              },
+              y: {
+                to: (context) => context.chart.scales.y.getPixelForValue(0),
+                duration: 360,
+                easing: 'easeInCubic',
+              },
+            },
+          },
+        },
         maintainAspectRatio: false,
         resizeDelay: 200,
       },
       plugins: [
         {
           id: 'htmlLegend',
-          afterUpdate(c, args, options) {
+          afterUpdate(c) {
             const ul = legend.current;
             if (!ul) return;
             // Remove old legend items
             while (ul.firstChild) {
               ul.firstChild.remove();
             }
-            // Reuse the built-in legendItems generator
-            const items = c.options.plugins.legend.labels.generateLabels(c);
-            items.forEach((item) => {
+
+            const createButton = ({ text, color, active = true, onClick }) => {
               const li = document.createElement('li');
-              // Button element
+              li.style.flexShrink = '0';
               const button = document.createElement('button');
               button.style.display = 'inline-flex';
               button.style.alignItems = 'center';
-              button.style.opacity = item.hidden ? '.3' : '';
-              button.onclick = () => {
-                c.setDatasetVisibility(item.datasetIndex, !c.isDatasetVisible(item.datasetIndex));
-                c.update();
-              };
-              // Color box
+              button.style.whiteSpace = 'nowrap';
+              button.style.opacity = active ? '' : '.3';
+              button.onclick = onClick;
+
               const box = document.createElement('span');
               box.style.display = 'block';
               box.style.width = '12px';
               box.style.height = '12px';
-              box.style.borderRadius = 'calc(infinity * 1px)';
+              box.style.borderRadius = '9999px';
               box.style.marginRight = '8px';
-              box.style.borderWidth = '3px';
-              box.style.borderColor = c.data.datasets[item.datasetIndex].borderColor;
+              box.style.backgroundColor = color;
               box.style.pointerEvents = 'none';
-              // Label
+
               const label = document.createElement('span');
               label.classList.add('text-gray-500', 'dark:text-gray-400');
               label.style.fontSize = '14px';
               label.style.lineHeight = 'calc(1.25 / 0.875)';
-              const labelText = document.createTextNode(item.text);
+              const labelText = document.createTextNode(text);
               label.appendChild(labelText);
               li.appendChild(button);
               button.appendChild(box);
               button.appendChild(label);
               ul.appendChild(li);
+            };
+
+            const datasets = c.data.datasets;
+            const metrics = datasets.reduce((items, dataset, index) => {
+              if (!dataset.metricLabel || items.some((item) => item.label === dataset.metricLabel)) {
+                return items;
+              }
+
+              items.push({
+                label: dataset.metricLabel,
+                color: dataset.borderColor,
+                indexes: datasets
+                  .map((candidate, candidateIndex) => (
+                    candidate.metricLabel === dataset.metricLabel ? candidateIndex : null
+                  ))
+                  .filter((candidateIndex) => candidateIndex !== null),
+                index,
+              });
+              return items;
+            }, []);
+
+            metrics.forEach((metric) => {
+              createButton({
+                text: metric.label,
+                color: metric.color,
+                active: metric.indexes.some((index) => c.isDatasetVisible(index)),
+                onClick: () => {
+                  const shouldShow = !metric.indexes.some((index) => c.isDatasetVisible(index));
+                  metric.indexes.forEach((index) => {
+                    c.setDatasetVisibility(index, shouldShow);
+                  });
+                  c.update();
+                },
+              });
             });
           },
         },
@@ -174,14 +243,18 @@ function LineChart02({
     if (!chart) return;
 
     chart.data = data;
+    chart.options.scales.x.time.unit = timeUnit;
     chart.update();
-  }, [chart, data]);
+  }, [chart, data, timeUnit]);
 
   return (
     <React.Fragment>
       <div className="px-5 py-3">
-        <div className="flex flex-wrap justify-end gap-y-2 gap-x-4">
-          <ul ref={legend} className="flex flex-wrap gap-x-4 gap-y-2 sm:justify-end"></ul>
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+            实线为历史数据，虚线为AI预测趋势，具体数值可悬停查看。
+          </p>
+          <ul ref={legend} className="flex w-full flex-nowrap items-center gap-x-6 gap-y-2 overflow-x-auto whitespace-nowrap lg:w-auto lg:justify-end sm:gap-x-7"></ul>
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}

@@ -6,7 +6,7 @@ import { adjustColorOpacity, getCssVariable } from '../utils/Utils';
 Chart.register(Tooltip);
 
 // Define Chart.js default settings
-Chart.defaults.font.family = '"Inter", sans-serif';
+Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif';
 Chart.defaults.font.weight = 500;
 Chart.defaults.plugins.tooltip.borderWidth = 1;
 Chart.defaults.plugins.tooltip.displayColors = false;
@@ -32,11 +32,11 @@ export const chartAreaGradient = (ctx, chartArea, colorStops) => {
 
 export const chartColors = {
   textColor: {
-    light: getCssVariable('--color-gray-400'),
-    dark: getCssVariable('--color-gray-500'),
+    light: getCssVariable('--color-gray-500'),
+    dark: getCssVariable('--color-gray-400'),
   },
   gridColor: {
-    light: getCssVariable('--color-gray-100'),
+    light: getCssVariable('--color-gray-200'),
     dark: adjustColorOpacity(getCssVariable('--color-gray-700'), 0.6),
   },
   backdropColor: {
@@ -48,7 +48,7 @@ export const chartColors = {
     dark: getCssVariable('--color-gray-100'),
   },
   tooltipBodyColor : {
-    light: getCssVariable('--color-gray-500'),
+    light: getCssVariable('--color-gray-600'),
     dark: getCssVariable('--color-gray-400')
   },
   tooltipBgColor: {

@@ -2,6 +2,24 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Transition from '../utils/Transition';
 
+const financeTips = [
+  {
+    title: '高价值用户活跃度上升',
+    text: '近7天研报阅读和自选资产关注明显增加，建议优先推送会员权益和深度投研内容。',
+    time: '刚刚',
+  },
+  {
+    title: '流失风险人群需要触达',
+    text: '部分用户访问频次连续下降，可结合到期提醒、权益说明和专属顾问服务进行召回。',
+    time: '15分钟前',
+  },
+  {
+    title: 'AI预测模型已更新',
+    text: '用户价值分层和未来6个月趋势预测已刷新，建议关注波动较大的潜在付费用户。',
+    time: '今天 09:30',
+  },
+];
+
 function DropdownNotifications({
   align
 }) {
@@ -11,7 +29,6 @@ function DropdownNotifications({
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
-  // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
@@ -22,7 +39,6 @@ function DropdownNotifications({
     return () => document.removeEventListener('click', clickHandler);
   });
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
       if (!dropdownOpen || keyCode !== 27) return;
@@ -41,7 +57,7 @@ function DropdownNotifications({
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-expanded={dropdownOpen}
       >
-        <span className="sr-only">Notifications</span>
+        <span className="sr-only">通知</span>
         <svg
           className="fill-current text-gray-500/80 dark:text-gray-400/80"
           width={16}
@@ -70,38 +86,23 @@ function DropdownNotifications({
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
         >
-          <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase pt-1.5 pb-2 px-4">Notifications</div>
+          <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 pt-1.5 pb-2 px-4">金融提示</div>
           <ul>
-            <li className="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
-              <Link
-                className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700/20"
-                to="#0"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <span className="block text-sm mb-2">📣 <span className="font-medium text-gray-800 dark:text-gray-100">Edit your information in a swipe</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</span>
-                <span className="block text-xs font-medium text-gray-400 dark:text-gray-500">Feb 12, 2024</span>
-              </Link>
-            </li>
-            <li className="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
-              <Link
-                className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700/20"
-                to="#0"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <span className="block text-sm mb-2">📣 <span className="font-medium text-gray-800 dark:text-gray-100">Edit your information in a swipe</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</span>
-                <span className="block text-xs font-medium text-gray-400 dark:text-gray-500">Feb 9, 2024</span>
-              </Link>
-            </li>
-            <li className="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
-              <Link
-                className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700/20"
-                to="#0"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <span className="block text-sm mb-2">🚀<span className="font-medium text-gray-800 dark:text-gray-100">Say goodbye to paper receipts!</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</span>
-                <span className="block text-xs font-medium text-gray-400 dark:text-gray-500">Jan 24, 2024</span>
-              </Link>
-            </li>
+            {financeTips.map((tip) => (
+              <li key={tip.title} className="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
+                <Link
+                  className="block py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-700/20"
+                  to="#0"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  <span className="block text-sm mb-2">
+                    <span className="font-medium text-gray-800 dark:text-gray-100">{tip.title}</span>
+                    <span className="text-gray-600 dark:text-gray-300">：{tip.text}</span>
+                  </span>
+                  <span className="block text-xs font-medium text-gray-400 dark:text-gray-500">{tip.time}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </Transition>

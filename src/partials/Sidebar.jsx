@@ -117,7 +117,7 @@ function Sidebar({
                         to={item.path}
                         className={`group block mr-4 rounded-md truncate transition-[background-color,box-shadow] duration-500 ease-out ${
                           isActive
-                            ? "bg-[#1677ff] text-white shadow-sm"
+                            ? "bg-violet-600 text-white shadow-sm"
                             : "text-gray-900 dark:text-white"
                         }`}
                         onClick={() => setSidebarOpen(false)}

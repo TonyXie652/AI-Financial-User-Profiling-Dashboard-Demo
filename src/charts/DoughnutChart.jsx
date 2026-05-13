@@ -79,7 +79,7 @@ function DoughnutChart({
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.font = '700 18px Inter, sans-serif';
+            ctx.font = '700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif';
 
             arcs.forEach((arc, index) => {
               if (!c.getDataVisibility(index)) return;

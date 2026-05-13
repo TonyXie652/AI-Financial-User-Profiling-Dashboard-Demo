@@ -1,114 +1,174 @@
 import React, { useMemo, useState } from 'react';
 import LineChart from '../../charts/LineChart02';
 
-const labels = [
-  '01-01-2026',
-  '01-08-2026',
-  '01-15-2026',
-  '01-22-2026',
-  '01-29-2026',
-  '02-05-2026',
-  '02-12-2026',
-  '02-19-2026',
-  '02-26-2026',
-  '03-05-2026',
-  '03-12-2026',
-  '03-19-2026',
-];
+const financePalette = {
+  primaryBlue: '#2F6FDB',
+  signalRed: '#C2413F',
+  slateGray: '#475569',
+};
+
+const timeRangeConfig = {
+  '7d': {
+    label: '近7天',
+    unit: 'day',
+    labels: ['05-07-2026', '05-08-2026', '05-09-2026', '05-10-2026', '05-11-2026', '05-12-2026', '05-13-2026'],
+    historyPoints: 5,
+    trend: 'short',
+  },
+  '30d': {
+    label: '近30天',
+    unit: 'day',
+    labels: ['04-14-2026', '04-19-2026', '04-24-2026', '04-29-2026', '05-04-2026', '05-09-2026', '05-14-2026'],
+    historyPoints: 5,
+    trend: 'medium',
+  },
+  '90d': {
+    label: '近90天',
+    unit: 'week',
+    labels: ['02-12-2026', '02-26-2026', '03-12-2026', '03-26-2026', '04-09-2026', '04-23-2026', '05-07-2026', '05-21-2026'],
+    historyPoints: 6,
+    trend: 'quarter',
+  },
+  '1y': {
+    label: '近一年',
+    unit: 'month',
+    labels: ['06-01-2025', '07-01-2025', '08-01-2025', '09-01-2025', '10-01-2025', '11-01-2025', '12-01-2025', '01-01-2026', '02-01-2026', '03-01-2026', '04-01-2026', '05-01-2026', '06-01-2026'],
+    historyPoints: 9,
+    trend: 'year',
+  },
+};
+
+const rangeSeries = {
+  short: {
+    history: [58, 61, 59, 65, 68],
+    forecast: [68, 71, 73],
+  },
+  medium: {
+    history: [46, 52, 57, 63, 66],
+    forecast: [66, 70, 74],
+  },
+  quarter: {
+    history: [42, 48, 51, 58, 64, 67],
+    forecast: [67, 72, 76],
+  },
+  year: {
+    history: [39, 42, 48, 44, 53, 51, 61, 66, 70],
+    forecast: [70, 68, 74, 78, 76],
+  },
+};
 
 const kpiGroups = {
   用户价值: [
     {
       label: '综合用户价值指数',
-      data: [62, 66, 64, 71, 69, 76, 73, 79, 75, 82, 80, 86],
-      color: '#8B5CF6',
+      color: financePalette.primaryBlue,
+      offset: 0,
     },
     {
       label: '高价值用户数',
-      data: [52, 55, 58, 57, 63, 68, 66, 72, 76, 74, 81, 84],
-      color: '#22C55E',
+      color: financePalette.slateGray,
+      offset: -8,
     },
     {
       label: '潜在付费用户数',
-      data: [34, 38, 41, 43, 40, 48, 51, 49, 55, 58, 62, 65],
-      color: '#3B82F6',
+      color: financePalette.signalRed,
+      offset: -18,
     },
   ],
   行为活跃: [
     {
       label: '日活跃指数',
-      data: [48, 54, 52, 61, 58, 64, 69, 66, 72, 76, 74, 81],
-      color: '#06B6D4',
+      color: financePalette.primaryBlue,
+      offset: 4,
     },
     {
-      label: '访问频次指数',
-      data: [36, 39, 45, 43, 51, 48, 55, 59, 57, 64, 68, 70],
-      color: '#F59E0B',
+      label: '工具使用指数',
+      color: financePalette.slateGray,
+      offset: -6,
     },
     {
-      label: '沉默唤醒指数',
-      data: [28, 31, 35, 33, 42, 39, 46, 44, 52, 49, 55, 59],
-      color: '#A855F7',
+      label: '内容浏览指数',
+      color: financePalette.signalRed,
+      offset: -12,
     },
   ],
   标签体系: [
     {
       label: '标签覆盖指数',
-      data: [42, 46, 51, 55, 57, 62, 66, 69, 72, 76, 79, 83],
-      color: '#10B981',
+      color: financePalette.primaryBlue,
+      offset: 2,
     },
     {
       label: '平均标签指数',
-      data: [38, 41, 45, 44, 50, 54, 52, 58, 61, 63, 68, 71],
-      color: '#60A5FA',
+      color: financePalette.slateGray,
+      offset: -9,
     },
     {
       label: '标签更新效率',
-      data: [31, 36, 34, 43, 47, 45, 53, 56, 54, 62, 65, 69],
-      color: '#F97316',
+      color: financePalette.signalRed,
+      offset: -15,
     },
   ],
   AI预测: [
     {
-      label: '实际价值',
-      data: [70, 72, 75, 73, 78, 80, 77, 83, 85, 84, 88, 90],
-      color: '#818CF8',
+      label: '实际价值指数',
+      color: financePalette.primaryBlue,
+      offset: 5,
     },
     {
       label: 'AI预测价值',
-      data: [44, 48, 51, 57, 55, 62, 66, 64, 71, 74, 78, 82],
-      color: '#22C55E',
+      color: financePalette.slateGray,
+      offset: -2,
     },
     {
       label: '流失风险指数',
-      data: [58, 55, 61, 57, 64, 60, 68, 65, 72, 69, 76, 73],
-      color: '#F97316',
+      color: financePalette.signalRed,
+      offset: -10,
+      invert: true,
     },
   ],
   群体画像: [
     {
-      label: '核心群体指数',
-      data: [56, 60, 58, 65, 69, 66, 73, 75, 72, 80, 82, 86],
-      color: '#14B8A6',
+      label: '核心人群指数',
+      color: financePalette.primaryBlue,
+      offset: 1,
     },
     {
-      label: '成长群体指数',
-      data: [39, 44, 48, 46, 53, 57, 55, 63, 66, 64, 72, 75],
-      color: '#3B82F6',
+      label: '成长人群指数',
+      color: financePalette.slateGray,
+      offset: -11,
     },
     {
-      label: '风险群体指数',
-      data: [52, 49, 55, 51, 59, 56, 63, 60, 68, 65, 72, 70],
-      color: '#F43F5E',
+      label: '风险人群指数',
+      color: financePalette.signalRed,
+      offset: -6,
+      invert: true,
     },
   ],
 };
 
-function toDataset(item) {
-  return {
-    label: item.label,
-    data: item.data,
-    borderColor: item.color,
+function clampValue(value) {
+  return Math.max(18, Math.min(80, value));
+}
+
+function applyMetricShape(values, item) {
+  return values.map((value, index) => {
+    const drift = item.invert ? index * -2 : index % 2 === 0 ? 0 : 2;
+    return clampValue(value + item.offset + drift);
+  });
+}
+
+function createTrendDatasets(item, rangeConfig) {
+  const { labels, historyPoints, trend } = rangeConfig;
+  const baseSeries = rangeSeries[trend];
+  const history = applyMetricShape(baseSeries.history.slice(0, historyPoints), item);
+  const shapedForecast = applyMetricShape(baseSeries.forecast, item);
+  const forecast = [
+    history[history.length - 1],
+    ...shapedForecast.slice(1),
+  ];
+  const forecastOffset = history.length - 1;
+  const baseOptions = {
     fill: false,
     borderWidth: 2,
     pointRadius: 0,
@@ -119,20 +179,48 @@ function toDataset(item) {
     pointHoverBorderWidth: 0,
     clip: 20,
     tension: 0.35,
+    spanGaps: false,
   };
+
+  return [
+    {
+      ...baseOptions,
+      label: `${item.label} 历史数据`,
+      metricLabel: item.label,
+      segmentLabel: '历史数据',
+      data: [
+        ...history,
+        ...Array(labels.length - history.length).fill(null),
+      ],
+      borderColor: item.color,
+    },
+    {
+      ...baseOptions,
+      label: `${item.label} AI预测`,
+      metricLabel: item.label,
+      segmentLabel: 'AI预测',
+      data: [
+        ...Array(forecastOffset).fill(null),
+        ...forecast,
+      ],
+      borderColor: item.color,
+      borderDash: [6, 5],
+    },
+  ];
 }
 
-function DashboardCard06() {
+function DashboardCard06({ timeRange = '30d' }) {
   const [activeGroup, setActiveGroup] = useState('用户价值');
   const activeLines = kpiGroups[activeGroup];
+  const rangeConfig = timeRangeConfig[timeRange] || timeRangeConfig['30d'];
 
   const chartData = useMemo(() => ({
-    labels,
-    datasets: activeLines.map(toDataset),
-  }), [activeLines]);
+    labels: rangeConfig.labels,
+    datasets: activeLines.flatMap((item) => createTrendDatasets(item, rangeConfig)),
+  }), [activeLines, rangeConfig]);
 
   return (
-    <div className="flex flex-col col-span-full bg-white dark:bg-gray-800 shadow-xs rounded-xl transition-colors duration-500">
+    <div className="flex flex-col col-span-full bg-white hover:bg-blue-50/40 dark:bg-gray-900 dark:hover:bg-white/[0.04] shadow-xs dark:shadow-[0_12px_28px_rgba(0,0,0,0.26)] rounded-xl transition-colors duration-300">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -140,6 +228,8 @@ function DashboardCard06() {
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               当前展示：
               <span className="font-semibold text-gray-800 dark:text-gray-100">{activeGroup} KPI</span>
+              <span className="mx-2 text-gray-300 dark:text-gray-600">/</span>
+              <span>{rangeConfig.label}</span>
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -152,7 +242,7 @@ function DashboardCard06() {
                   onClick={() => setActiveGroup(group)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 ${
                     isActive
-                      ? 'bg-violet-500 text-white shadow-sm shadow-violet-500/30'
+                      ? 'bg-violet-600 text-white shadow-sm shadow-violet-500/20'
                       : 'bg-gray-100 text-gray-600 hover:text-gray-900 dark:bg-gray-700/60 dark:text-gray-300 dark:hover:text-white'
                   }`}
                 >
@@ -163,7 +253,12 @@ function DashboardCard06() {
           </div>
         </div>
       </header>
-      <LineChart data={chartData} width={595} height={248} />
+      <LineChart
+        data={chartData}
+        timeUnit={rangeConfig.unit}
+        width={595}
+        height={248}
+      />
     </div>
   );
 }
