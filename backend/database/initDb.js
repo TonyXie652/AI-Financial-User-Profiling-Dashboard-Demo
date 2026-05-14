@@ -66,6 +66,7 @@ db.exec(`
     user_id TEXT PRIMARY KEY,
     main_conclusion TEXT,
     key_reasons TEXT,
+    key_labels TEXT,
     operation_suggestion TEXT,
     ai_confidence REAL,
     updated_at TEXT,

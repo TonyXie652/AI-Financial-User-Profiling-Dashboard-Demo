@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import {
   Routes,
   Route,
@@ -9,15 +9,15 @@ import './css/style.css';
 
 import './charts/ChartjsConfig';
 
-// Import pages
-import Dashboard from './pages/Dashboard';
-import PersonalProfile from './pages/Personal_profile';
-import GroupProfile from './pages/Group_profile';
-import TagSystem from './pages/Tag_system';
-import DataAnalysis from './pages/Data_analysis';
-import ModelSettings from './pages/Model_settings';
 import Sidebar from './partials/Sidebar';
 import { useElasticScroll } from './utils/useElasticScroll';
+
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const PersonalProfile = lazy(() => import('./pages/Personal_profile'));
+const GroupProfile = lazy(() => import('./pages/Group_profile'));
+const TagSystem = lazy(() => import('./pages/Tag_system'));
+const DataAnalysis = lazy(() => import('./pages/Data_analysis'));
+const ModelSettings = lazy(() => import('./pages/Model_settings'));
 
 function App() {
 
@@ -66,33 +66,35 @@ function App() {
           className="flex min-h-full flex-col transition-transform duration-300 ease-out"
           style={{ transform: `translateY(${elasticOffset}px)` }}
         >
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={(
-                <Dashboard
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                  timeRange={timeRange}
-                  setTimeRange={setTimeRange}
-                />
-              )}
-            />
-            <Route
-              path="/personal-profile"
-              element={(
-                <PersonalProfile
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                />
-              )}
-            />
-            <Route path="/group-profile" element={<GroupProfile />} />
-            <Route path="/tag-system" element={<TagSystem />} />
-            <Route path="/data-analysis" element={<DataAnalysis />} />
-            <Route path="/model-settings" element={<ModelSettings />} />
-          </Routes>
+          <Suspense fallback={<div className="grow bg-gray-50 dark:bg-gray-950" />}>
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={(
+                  <Dashboard
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}
+                    timeRange={timeRange}
+                    setTimeRange={setTimeRange}
+                  />
+                )}
+              />
+              <Route
+                path="/personal-profile"
+                element={(
+                  <PersonalProfile
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}
+                  />
+                )}
+              />
+              <Route path="/group-profile" element={<GroupProfile />} />
+              <Route path="/tag-system" element={<TagSystem />} />
+              <Route path="/data-analysis" element={<DataAnalysis />} />
+              <Route path="/model-settings" element={<ModelSettings />} />
+            </Routes>
+          </Suspense>
         </div>
       </div>
     </div>

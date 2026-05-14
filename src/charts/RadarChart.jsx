@@ -14,7 +14,7 @@ import { chartColors } from "./ChartjsConfig";
 
 Chart.register(RadarController, RadialLinearScale, LineElement, PointElement, Filler, Tooltip);
 
-function RadarChart({ data, width = 520, height = 270 }) {
+function RadarChart({ data, width = 560, height = 290 }) {
   const canvas = useRef(null);
   const [chart, setChart] = useState(null);
   const { currentTheme } = useThemeProvider();

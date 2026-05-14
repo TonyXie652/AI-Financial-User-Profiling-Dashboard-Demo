@@ -12,6 +12,17 @@ app.use(express.json());
 const dbPath = path.join(__dirname, "database", "finance_demo.db");
 const db = new Database(dbPath);
 
+function parseJsonArray(value) {
+  if (!value) return [];
+
+  try {
+    const parsedValue = JSON.parse(value);
+    return Array.isArray(parsedValue) ? parsedValue : [];
+  } catch {
+    return [];
+  }
+}
+
 // 获取所有用户
 app.get("/api/users", (req, res) => {
   const users = db.prepare(`
@@ -47,7 +58,8 @@ app.get("/api/users/:id/profile", (req, res) => {
     aiUsage,
     aiAnalysis: {
       ...aiAnalysis,
-      key_reasons: aiAnalysis ? JSON.parse(aiAnalysis.key_reasons) : [],
+      key_reasons: parseJsonArray(aiAnalysis?.key_reasons),
+      key_labels: parseJsonArray(aiAnalysis?.key_labels),
     },
   });
 });

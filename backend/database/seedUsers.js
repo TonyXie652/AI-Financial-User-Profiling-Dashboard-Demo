@@ -16,6 +16,9 @@ ensureColumn("user_behavior", "click_product_detail_30d", "INTEGER");
 ensureColumn("user_behavior", "content_favorite_count_30d", "INTEGER");
 ensureColumn("user_behavior", "share_count_30d", "INTEGER");
 ensureColumn("user_behavior", "comment_count_30d", "INTEGER");
+ensureColumn("user_ai_analysis", "key_labels", "TEXT");
+
+const stringifyKeyLabels = (labels) => JSON.stringify(labels);
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS user_risk (
@@ -97,10 +100,10 @@ const insertScores = db.prepare(`
 
 const insertAiAnalysis = db.prepare(`
   INSERT INTO user_ai_analysis (
-    user_id, main_conclusion, key_reasons,
+    user_id, main_conclusion, key_reasons, key_labels,
     operation_suggestion, ai_confidence, updated_at
   ) VALUES (
-    @user_id, @main_conclusion, @key_reasons,
+    @user_id, @main_conclusion, @key_reasons, @key_labels,
     @operation_suggestion, @ai_confidence, @updated_at
   )
 `);
@@ -182,6 +185,11 @@ const users = [
         "多次查看基金配置和债券市场内容",
         "AI问答完成率较高，数字化服务接受度强",
       ]),
+      key_labels: stringifyKeyLabels([
+        ["高活跃", "稳定访问"],
+        ["配置意图", "稳健偏好"],
+        ["AI接受度", "服务粘性"],
+      ]),
       operation_suggestion:
         "建议推荐基金组合分析、宏观研报会员权益和稳健型资产配置内容。",
       ai_confidence: 0.86,
@@ -257,6 +265,11 @@ const users = [
         "近30天仅活跃3天",
         "最近一次访问距离当前时间较久",
         "内容阅读深度下降，AI工具使用频率较低",
+      ]),
+      key_labels: stringifyKeyLabels([
+        ["低活跃", "流失预警"],
+        ["访问间隔", "召回触点"],
+        ["低互动", "AI低频"],
       ]),
       operation_suggestion:
         "建议推送个性化热点资讯、短内容摘要和限时会员体验权益。",
@@ -334,6 +347,11 @@ const users = [
         "多次查看产品详情和下载研报，说明配置决策已进入比较阶段",
         "风险偏好与行为表现一致，合规信任风险较低",
       ]),
+      key_labels: stringifyKeyLabels([
+        ["高活跃", "即时访问"],
+        ["产品比较", "决策推进"],
+        ["风险匹配", "高信任"],
+      ]),
       operation_suggestion:
         "建议推送稳健组合方案、固收+专题研报和专属顾问预约入口。",
       ai_confidence: 0.9,
@@ -409,6 +427,11 @@ const users = [
         "收藏、分享和评论行为活跃，内容偏好明确",
         "搜索和AI问答频次中等，仍处于学习和筛选阶段",
         "近期访问稳定，无明显风险预警信号",
+      ]),
+      key_labels: stringifyKeyLabels([
+        ["内容互动", "偏好明确"],
+        ["学习阶段", "筛选中"],
+        ["稳定访问", "低风险"],
       ]),
       operation_suggestion:
         "建议推送ETF入门专题、基金对比工具和内容收藏后的延伸阅读提醒。",
@@ -486,6 +509,11 @@ const users = [
         "搜索集中在ETF和股票方向，行为风险高于问卷风险",
         "近期仍保持较高登录频率，具备持续运营价值",
       ]),
+      key_labels: stringifyKeyLabels([
+        ["AI高频", "数字偏好"],
+        ["风险偏移", "高波动关注"],
+        ["高登录", "持续运营"],
+      ]),
       operation_suggestion:
         "建议在AI问答结果中增加风险揭示，并推荐波动说明、资产配置模拟器和适当性复核入口。",
       ai_confidence: 0.87,
@@ -562,6 +590,11 @@ const users = [
         "访问频率偏低但有研报下载和会员页点击",
         "问卷风险和行为风险存在轻微不一致，需要温和提示",
       ]),
+      key_labels: stringifyKeyLabels([
+        ["高资产", "固收偏好"],
+        ["低频高值", "研报触达"],
+        ["风险校准", "温和提示"],
+      ]),
       operation_suggestion:
         "建议推送低频高质量月度配置报告、稳健组合说明和一对一顾问服务邀约。",
       ai_confidence: 0.81,
@@ -637,6 +670,11 @@ const users = [
         "产品详情点击较多但研报下载少，可能偏短线热点驱动",
         "存在投诉和敏感操作记录，合规信任分受压",
         "行为风险高于问卷风险，需要及时干预",
+      ]),
+      key_labels: stringifyKeyLabels([
+        ["热点驱动", "低研究"],
+        ["合规压力", "敏感操作"],
+        ["风险升高", "及时干预"],
       ]),
       operation_suggestion:
         "建议推送风险提示、持仓波动解释内容，并触发人工顾问跟进确认投资适当性。",
