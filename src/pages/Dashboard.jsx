@@ -21,6 +21,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen, timeRange, setTimeRange }) {
         setSidebarOpen={setSidebarOpen}
         timeRange={timeRange}
         setTimeRange={setTimeRange}
+        variant="v3"
       />
 
       <main className="grow bg-gray-50 dark:bg-gray-950 transition-colors duration-300">

@@ -29,17 +29,17 @@ const categoryProfileData = [
       {
         target: "转化潜力型",
         strength: 76,
-        reason: "高频访问行情后，容易进入产品详情页或会员权益页。",
+        reason: "实时需求高，愿为提醒和高级行情付费，提升转化。",
       },
       {
         target: "风险预警型",
         strength: 64,
-        reason: "对短期波动敏感，市场下跌时更容易关注风险资讯。",
+        reason: "行情波动触发止损焦虑，会转向风险提示降低损失。",
       },
       {
         target: "AI工具偏好型",
         strength: 58,
-        reason: "常使用 AI 问答解释行情波动和个股异动原因。",
+        reason: "追踪行情后需要解释异动，AI解读能提升决策效率。",
       },
     ],
 
@@ -52,10 +52,10 @@ const categoryProfileData = [
 
     aiExplanation: {
       inputSignals: [
-        "30天活跃天数较高",
-        "行情页访问集中在交易时段",
-        "自选股与指数页面访问频繁",
-        "突发新闻后的回访率高",
+        { signal: "30日活跃≥24天", weight: 31 },
+        { signal: "开盘前后访问≥18次", weight: 29 },
+        { signal: "自选股查看≥45次", weight: 24 },
+        { signal: "突发新闻后2h回访", weight: 16 },
       ],
       judgement: "该群体主要由实时市场变化驱动，信息需求偏短周期、即时性和提醒型。",
       labels: ["行情敏感", "高频回访", "短周期关注", "提醒依赖"],
@@ -73,6 +73,7 @@ const categoryProfileData = [
     operationSuggestion: {
       priority: "高",
       action: "优先推送行情异动提醒、自选股预警和热点快讯。",
+      executor: "行情内容运营、推送运营、数据运营",
       goal: "提升回访频率，并引导其使用高级提醒和行情分析工具。",
     },
   },
@@ -98,17 +99,17 @@ const categoryProfileData = [
       {
         target: "AI工具偏好型",
         strength: 72,
-        reason: "常使用 AI 摘要、研报提炼和行业问答辅助理解内容。",
+        reason: "研报信息量大，AI摘要可降低理解成本并增强粘性。",
       },
       {
         target: "稳健配置型",
         strength: 61,
-        reason: "部分用户从行业研究逐渐转向长期配置和组合分析。",
+        reason: "研究结论沉淀成配置方案，推动长期持仓与留存。",
       },
       {
         target: "转化潜力型",
         strength: 55,
-        reason: "对高级数据、研报权限和投研工具存在潜在付费需求。",
+        reason: "深度资料依赖强，高级数据权限可转化付费需求。",
       },
     ],
 
@@ -121,10 +122,10 @@ const categoryProfileData = [
 
     aiExplanation: {
       inputSignals: [
-        "研报下载次数高于平均水平",
-        "长文本页面停留时间较长",
-        "行业关键词搜索频繁",
-        "收藏和二次访问比例较高",
+        { signal: "30日研报下载≥18篇", weight: 34 },
+        { signal: "长文停留≥12分钟", weight: 28 },
+        { signal: "行业搜索≥30次", weight: 22 },
+        { signal: "收藏回看≥15次", weight: 16 },
       ],
       judgement: "该群体不是由短期行情驱动，而是由研究需求和决策准备驱动。",
       labels: ["深度阅读", "研究导向", "高内容价值", "长周期决策"],
@@ -142,6 +143,7 @@ const categoryProfileData = [
     operationSuggestion: {
       priority: "高",
       action: "推荐行业专题、研报合集、AI研报摘要和高级数据工具。",
+      executor: "投研内容运营、研究员、内容编辑",
       goal: "提升内容粘性，并引导其转化为深度投研工具用户。",
     },
   },
@@ -167,17 +169,17 @@ const categoryProfileData = [
       {
         target: "深度研究型",
         strength: 63,
-        reason: "部分用户会通过研报和行业分析辅助长期配置决策。",
+        reason: "配置决策需证据支撑，研报分析能提升方案可信度。",
       },
       {
         target: "风险预警型",
         strength: 57,
-        reason: "当市场波动加剧时，该群体会提高对风险提示和持仓稳定性的关注。",
+        reason: "稳健用户重视回撤，波动时转向预警保护持仓。",
       },
       {
         target: "转化潜力型",
         strength: 49,
-        reason: "对组合分析、基金筛选和资产配置工具存在一定付费可能。",
+        reason: "组合优化需求明确，筛选和回测工具可促成付费。",
       },
     ],
 
@@ -190,10 +192,10 @@ const categoryProfileData = [
 
     aiExplanation: {
       inputSignals: [
-        "基金和ETF相关页面访问占比较高",
-        "风险等级偏中低",
-        "短线行情页面访问频率较低",
-        "资产配置类内容收藏较多",
+        { signal: "基金访问占比≥68%", weight: 34 },
+        { signal: "低风险资产点击≥28次", weight: 27 },
+        { signal: "短线内容点击≤5次", weight: 21 },
+        { signal: "配置内容收藏≥12次", weight: 18 },
       ],
       judgement: "该群体以长期配置和风险控制为主要需求，适合稳健型内容和工具触达。",
       labels: ["长期配置", "风险分散", "稳健偏好", "低波动需求"],
@@ -211,6 +213,7 @@ const categoryProfileData = [
     operationSuggestion: {
       priority: "中高",
       action: "推荐基金筛选、组合回测、风险分散和长期配置专题。",
+      executor: "资产配置运营、基金产品运营、财富顾问",
       goal: "增强长期留存，并提升其对配置工具和顾问服务的使用率。",
     },
   },
@@ -236,17 +239,17 @@ const categoryProfileData = [
       {
         target: "深度研究型",
         strength: 74,
-        reason: "常用 AI 对研报和行业内容进行摘要、提炼和解释。",
+        reason: "AI解读降低研报门槛，引导用户消费更深内容。",
       },
       {
         target: "行情追踪型",
         strength: 58,
-        reason: "使用 AI 解释行情波动、个股异动和热点事件。",
+        reason: "AI解释热点更快，促使用户回到行情页持续追踪。",
       },
       {
         target: "转化潜力型",
         strength: 68,
-        reason: "对高级 AI 工具、智能分析权限和会员功能接受度较高。",
+        reason: "智能服务体验好，高级AI权限更容易形成付费。",
       },
     ],
 
@@ -259,10 +262,10 @@ const categoryProfileData = [
 
     aiExplanation: {
       inputSignals: [
-        "AI问答次数高于平均水平",
-        "AI摘要功能使用频率高",
-        "智能工具入口点击率高",
-        "AI正反馈数量较多",
+        { signal: "AI问答使用≥35次", weight: 36 },
+        { signal: "AI摘要使用≥22次", weight: 27 },
+        { signal: "工具入口点击≥28次", weight: 23 },
+        { signal: "结果正向反馈≥12次", weight: 14 },
       ],
       judgement: "该群体的核心价值不只来自传统内容消费，而是来自对智能服务的高接受度。",
       labels: ["AI高接受", "工具驱动", "智能投研", "功能尝鲜"],
@@ -280,6 +283,7 @@ const categoryProfileData = [
     operationSuggestion: {
       priority: "高",
       action: "优先展示 AI投研助手、智能摘要、智能选股和个性化解释功能。",
+      executor: "AI产品运营、算法产品经理、增长运营",
       goal: "提升 AI 功能渗透率，并形成高级智能工具的付费转化。",
     },
   },
@@ -305,17 +309,17 @@ const categoryProfileData = [
       {
         target: "行情追踪型",
         strength: 76,
-        reason: "行情高频用户容易因实时提醒、高级行情工具产生付费意愿。",
+        reason: "付费意愿来自实时机会，高级行情可承接交易需求。",
       },
       {
         target: "AI工具偏好型",
         strength: 68,
-        reason: "对高级 AI 功能存在较强兴趣，适合转化为智能工具用户。",
+        reason: "愿试高级功能，AI分析能放大效率并推动订阅。",
       },
       {
         target: "深度研究型",
         strength: 55,
-        reason: "深度内容用户可能为高级研报和数据权限付费。",
+        reason: "决策前需更多依据，高级研报可承接付费兴趣。",
       },
     ],
 
@@ -328,13 +332,13 @@ const categoryProfileData = [
 
     aiExplanation: {
       inputSignals: [
-        "产品详情点击次数高",
-        "会员页访问频率高",
-        "高级功能入口曝光后停留较久",
-        "内容消费和工具使用均达到一定水平",
+        { signal: "产品页访问≥20次", weight: 32 },
+        { signal: "会员页访问≥16次", weight: 29 },
+        { signal: "高级功能停留≥10分钟", weight: 24 },
+        { signal: "试用入口点击≥9次", weight: 15 },
       ],
       judgement: "该群体已表现出明确兴趣，但仍缺少完成转化的触发因素。",
-      labels: ["付费犹豫", "权益敏感", "高转化潜力", "临界决策"],
+      labels: ["付费临界", "权益敏感", "高频试用", "转化待激活"],
     },
 
     valueScores: {
@@ -349,6 +353,7 @@ const categoryProfileData = [
     operationSuggestion: {
       priority: "高",
       action: "展示会员权益对比、限时体验、核心功能试用和个性化推荐理由。",
+      executor: "会员增长运营、商业化产品运营、客户成功",
       goal: "降低决策门槛，推动从兴趣用户转化为付费用户。",
     },
   },
@@ -374,17 +379,17 @@ const categoryProfileData = [
       {
         target: "行情追踪型",
         strength: 64,
-        reason: "市场剧烈波动时，行情追踪用户可能转入风险关注状态。",
+        reason: "风险事件先来自行情异动，回看行情可定位原因。",
       },
       {
         target: "稳健配置型",
         strength: 57,
-        reason: "风险敏感用户可能逐渐转向更稳健的资产配置需求。",
+        reason: "风险敏感后偏向低波动配置，帮助恢复长期信任。",
       },
       {
         target: "转化潜力型",
         strength: 42,
-        reason: "部分用户仍可能通过风险工具、组合诊断功能产生转化。",
+        reason: "需要诊断和提醒工具，风险服务可转成付费入口。",
       },
     ],
 
@@ -397,10 +402,10 @@ const categoryProfileData = [
 
     aiExplanation: {
       inputSignals: [
-        "30天活跃天数下降",
-        "最近访问时间变远",
-        "风险类内容点击比例上升",
-        "部分用户存在异常登录、投诉或人工复核信号",
+        { signal: "14日活跃下降≥65%", weight: 33 },
+        { signal: "最近访问间隔≥12天", weight: 26 },
+        { signal: "风险内容点击≥18次", weight: 24 },
+        { signal: "异常提醒触发≥7次", weight: 17 },
       ],
       judgement: "该群体既可能存在流失风险，也可能存在风险认知增强，需要优先解释和安抚。",
       labels: ["流失预警", "风险敏感", "需召回", "合规关注"],
@@ -418,6 +423,7 @@ const categoryProfileData = [
     operationSuggestion: {
       priority: "中高",
       action: "推送持仓风险提醒、市场波动解释、轻量召回内容和人工服务入口。",
+      executor: "客户成功、客服团队、合规风控运营",
       goal: "降低沉默和投诉风险，恢复基础活跃与信任。",
     },
   },
@@ -446,6 +452,34 @@ function describeDonutSegment(center, outerRadius, innerRadius, startAngle, endA
     "A", innerRadius, innerRadius, 0, largeArcFlag, 0, innerStart.x, innerStart.y,
     "Z",
   ].join(" ");
+}
+
+function hexToRgb(hex) {
+  const normalized = hex.replace("#", "");
+
+  if (normalized.length !== 6) {
+    return null;
+  }
+
+  return {
+    r: parseInt(normalized.slice(0, 2), 16),
+    g: parseInt(normalized.slice(2, 4), 16),
+    b: parseInt(normalized.slice(4, 6), 16),
+  };
+}
+
+function blendColor(baseHex, targetHex, amount) {
+  const base = hexToRgb(baseHex);
+  const target = hexToRgb(targetHex);
+
+  if (!base || !target) {
+    return baseHex;
+  }
+
+  const blendChannel = (channel) =>
+    Math.round(base[channel] + (target[channel] - base[channel]) * amount);
+
+  return `rgb(${blendChannel("r")}, ${blendChannel("g")}, ${blendChannel("b")})`;
 }
 
 function CategoryRadarCard({ onCategoryClick }) {
@@ -674,7 +708,7 @@ function GroupRelationGraph({ category, allCategories }) {
     });
   };
 
-  const getNodeOffset = (node, index = 0, strength = 1) => {
+  const getNodeOffset = (index = 0, strength = 1) => {
     if (!graphMouse.active) {
       return { x: 0, y: 0 };
     }
@@ -687,13 +721,20 @@ function GroupRelationGraph({ category, allCategories }) {
     };
   };
 
+  const graphTilt = {
+    rotateX: graphMouse.active ? graphMouse.y * -3 : 0,
+    rotateY: graphMouse.active ? graphMouse.x * 3.5 : 0,
+  };
+
+  const activeNodeId = hoveredNode;
+
   if (!category || !category.relations?.length) return null;
 
   const centerNode = {
     id: category.label,
-    x: 260,
+    x: 270,
     y: 170,
-    r: 52,
+    r: 60,
   };
 
   const getCategoryColor = (label) => {
@@ -718,14 +759,14 @@ function GroupRelationGraph({ category, allCategories }) {
     count,
     centerX,
     centerY,
-    minDistance = 120,
-    minRadius = 125,
-    maxRadius = 205,
+    minDistance = 155,
+    minRadius = 160,
+    maxRadius = 230,
     bounds = {
-      minX: 52,
-      maxX: 468,
-      minY: 46,
-      maxY: 294,
+      minX: 42,
+      maxX: 498,
+      minY: 36,
+      maxY: 324,
     },
     seedText,
   }) => {
@@ -784,15 +825,16 @@ function GroupRelationGraph({ category, allCategories }) {
       count: category.relations.length,
       centerX: centerNode.x,
       centerY: centerNode.y,
-      minDistance: 150,
-      minRadius: 155,
-      maxRadius: 225,
+      minDistance: 160,
+      minRadius: 170,
+      maxRadius: 240,
       seedText: category.id || category.label,
     });
   }, [category.id, category.label, category.relations.length]);
 
   const relatedNodes = category.relations.map((relation, index) => {
     const position = randomPositions[index];
+    const color = getCategoryColor(relation.target);
 
     return {
       ...relation,
@@ -800,10 +842,15 @@ function GroupRelationGraph({ category, allCategories }) {
       x: position.x,
       y: position.y,
       r: 42 + (relation.strength / 100) * 8,
-      color: getCategoryColor(relation.target),
+      color,
+      lightColor: blendColor(color, "#ffffff", 0.4),
+      darkColor: blendColor(color, "#0f172a", 0.2),
     };
   });
 
+  const gradientPrefix = `relation-graph-${category.id || "category"}`;
+  const centerLightColor = blendColor(category.color, "#ffffff", 0.42);
+  const centerDarkColor = blendColor(category.color, "#0f172a", 0.24);
 
   const shortLabelMap = {
     行情追踪型: ["行情", "追踪型"],
@@ -864,23 +911,113 @@ function GroupRelationGraph({ category, allCategories }) {
 
   return (
     <div className="flex h-full min-h-[300px] flex-col px-5 py-4">
-      <h2 className="mb-2 text-base font-bold text-gray-800 dark:text-gray-100">
-        群体关系网络
-      </h2>
+      <div className="mb-2">
+        <h2 className="text-base font-bold text-gray-800 dark:text-gray-100">
+          群体关系网络
+        </h2>
+        <p className="mt-1 text-[11px] font-normal leading-4 text-gray-400 dark:text-gray-400">
+          展示当前群体与其他群体的迁移、转化或行为关联。
+        </p>
+      </div>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-[1fr_1fr]">
         {/* 左侧节点图 */}
-        <div className="flex min-h-0 items-center justify-center">
-          <svg
-            viewBox="0 0 540 360"
-            className="h-[270px] w-full max-w-[510px] overflow-visible"
+        <div className="flex min-h-0 items-center justify-center [perspective:900px]">
+          <motion.svg
+            viewBox="0 0 560 360"
+            className="h-[280px] w-full max-w-[540px] -translate-y-[8%] overflow-visible"
             onMouseMove={handleGraphMouseMove}
             onMouseLeave={handleGraphMouseLeave}
+            animate={{
+              rotateX: graphTilt.rotateX,
+              rotateY: graphTilt.rotateY,
+            }}
+            transition={{
+              duration: 0.2,
+              ease: "easeOut",
+            }}
+            style={{
+              transformOrigin: "50% 50%",
+              transformStyle: "preserve-3d",
+            }}
           >
+            <defs>
+              <filter
+                id={`${gradientPrefix}-node-shadow`}
+                x="-45%"
+                y="-45%"
+                width="190%"
+                height="190%"
+                colorInterpolationFilters="sRGB"
+              >
+                <feDropShadow
+                  dx="0"
+                  dy="10"
+                  stdDeviation="8"
+                  floodColor="rgb(15, 23, 42)"
+                  floodOpacity="0.12"
+                />
+              </filter>
+
+              <filter
+                id={`${gradientPrefix}-line-shadow`}
+                x="-30%"
+                y="-30%"
+                width="160%"
+                height="160%"
+                colorInterpolationFilters="sRGB"
+              >
+                <feDropShadow
+                  dx="0"
+                  dy="3"
+                  stdDeviation="2"
+                  floodColor="rgb(15, 23, 42)"
+                  floodOpacity="0.14"
+                />
+              </filter>
+
+              <radialGradient
+                id={`${gradientPrefix}-center`}
+                cx="50%"
+                cy="50%"
+                r="72%"
+              >
+                <stop offset="0%" stopColor={centerLightColor} />
+                <stop offset="76%" stopColor={category.color} />
+                <stop offset="100%" stopColor={centerDarkColor} />
+              </radialGradient>
+
+              {relatedNodes.map((node, index) => (
+                <React.Fragment key={`defs-${node.target}`}>
+                  <radialGradient
+                    id={`${gradientPrefix}-node-${index}`}
+                    cx="50%"
+                    cy="50%"
+                    r="72%"
+                  >
+                    <stop offset="0%" stopColor={node.lightColor} />
+                    <stop offset="78%" stopColor={node.color} />
+                    <stop offset="100%" stopColor={node.darkColor} />
+                  </radialGradient>
+
+                  <linearGradient
+                    id={`${gradientPrefix}-line-${index}`}
+                    x1={centerNode.x}
+                    y1={centerNode.y}
+                    x2={node.x}
+                    y2={node.y}
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop offset="0%" stopColor={category.color} stopOpacity="0.66" />
+                    <stop offset="100%" stopColor={node.color} stopOpacity="0.74" />
+                  </linearGradient>
+                </React.Fragment>
+              ))}
+            </defs>
             {/* 连线 + 线上的关联度 */}
             {relatedNodes.map((node, index) => {
-              const centerOffset = getNodeOffset(centerNode, 0, 0.45);
-              const nodeOffset = getNodeOffset(node, index + 1, 1);
+              const centerOffset = getNodeOffset(0, 0.45);
+              const nodeOffset = getNodeOffset(index + 1, 1);
 
               const animatedCenter = {
                 ...centerNode,
@@ -936,9 +1073,10 @@ function GroupRelationGraph({ category, allCategories }) {
                     y1={edge.startY}
                     x2={edge.endX}
                     y2={edge.endY}
-                    stroke="rgba(100,116,139,0.45)"
-                    strokeWidth={1.9}
+                    stroke={`url(#${gradientPrefix}-line-${index})`}
+                    strokeWidth={2.2}
                     strokeLinecap="round"
+                    filter={`url(#${gradientPrefix}-line-shadow)`}
                     animate={{
                       x1: edge.startX,
                       y1: edge.startY,
@@ -986,15 +1124,13 @@ function GroupRelationGraph({ category, allCategories }) {
             })}
 
             {/* 中心节点 */}
-            const centerOffset = getNodeOffset(centerNode, 0, 0.45);
-
             <motion.g
               className="cursor-pointer"
               onMouseEnter={() => setHoveredNode(centerNode.id)}
               onMouseLeave={() => setHoveredNode(null)}
               animate={{
-                x: getNodeOffset(centerNode, 0, 0.45).x,
-                y: getNodeOffset(centerNode, 0, 0.45).y,
+                x: getNodeOffset(0, 0.45).x,
+                y: getNodeOffset(0, 0.45).y,
                 scale: hoveredNode === centerNode.id ? 1.08 : 1,
                 filter:
                   hoveredNode === centerNode.id
@@ -1013,7 +1149,16 @@ function GroupRelationGraph({ category, allCategories }) {
                 cx={centerNode.x}
                 cy={centerNode.y}
                 r={centerNode.r}
-                fill={category.color}
+                fill={`url(#${gradientPrefix}-center)`}
+                filter={`url(#${gradientPrefix}-node-shadow)`}
+              />
+              <circle
+                cx={centerNode.x}
+                cy={centerNode.y}
+                r={centerNode.r - 1}
+                fill="none"
+                stroke="rgba(255,255,255,0.2)"
+                strokeWidth="1"
               />
 
               {getNodeLabelLines(category.label).map((line, index) => (
@@ -1032,8 +1177,8 @@ function GroupRelationGraph({ category, allCategories }) {
             {/* 外围节点 */}
             {relatedNodes.map((node, index) => {
               const labelLines = getNodeLabelLines(node.target);
-              const isHovered = hoveredNode === node.id;
-              const nodeOffset = getNodeOffset(node, index + 1, 1);
+              const isHovered = activeNodeId === node.id;
+              const nodeOffset = getNodeOffset(index + 1, 1);
 
               return (
                 <motion.g
@@ -1061,7 +1206,16 @@ function GroupRelationGraph({ category, allCategories }) {
                     cx={node.x}
                     cy={node.y}
                     r={node.r}
-                    fill={node.color}
+                    fill={`url(#${gradientPrefix}-node-${index})`}
+                    filter={`url(#${gradientPrefix}-node-shadow)`}
+                  />
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r={node.r - 1}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.18)"
+                    strokeWidth="1"
                   />
 
                   {labelLines.map((line, lineIndex) => (
@@ -1078,24 +1232,31 @@ function GroupRelationGraph({ category, allCategories }) {
                 </motion.g>
               );
             })}
-          </svg>
+          </motion.svg>
         </div>
 
         {/* 右侧关系摘要 */}
         <div className="flex min-h-0 flex-col justify-start gap-4 overflow-hidden pt-8">
           {category.relations.map((relation) => {
             const relationColor = getCategoryColor(relation.target);
+            const isRelationActive = activeNodeId === relation.target;
 
             return (
               <div
                 key={relation.target}
-                className="group border-l-2 py-2 pl-4 transition-all duration-300 hover:translate-x-0.5"
+                className={`group cursor-pointer border-l-2 py-2 pl-4 transition-all duration-300 ${
+                  isRelationActive ? "translate-x-0.5" : "hover:translate-x-0.5"
+                }`}
+                onMouseEnter={() => setHoveredNode(relation.target)}
+                onMouseLeave={() => setHoveredNode(null)}
                 style={{ borderColor: relationColor }}
               >
                 <div className="mb-1 flex items-center justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-2">
                     <span
-                      className="h-2 w-2 shrink-0 rounded-full"
+                      className={`h-2 w-2 shrink-0 rounded-full transition-transform duration-300 ${
+                        isRelationActive ? "scale-125" : "group-hover:scale-125"
+                      }`}
                       style={{ backgroundColor: relationColor }}
                     />
                     <span className="truncate text-xs font-bold text-gray-800 dark:text-gray-100">
@@ -1108,7 +1269,13 @@ function GroupRelationGraph({ category, allCategories }) {
                   </span>
                 </div>
 
-                <p className="line-clamp-2 text-[11px] leading-5 text-gray-500 transition-colors duration-300 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300">
+                <p
+                  className={`line-clamp-2 text-[11px] leading-5 transition-colors duration-300 ${
+                    isRelationActive
+                      ? "text-gray-700 dark:text-gray-300"
+                      : "text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300"
+                  }`}
+                >
                   {relation.reason}
                 </p>
               </div>
@@ -1186,6 +1353,151 @@ function GroupBasicDataTable({ category }) {
         {overview.behaviorPattern}
       </div>
     </div>
+  );
+}
+
+//AI决策解释组件
+function SignalWeightBars({ category }) {
+  const explanation = category?.aiExplanation;
+  const signals = explanation?.inputSignals || [];
+
+  if (!signals?.length) return null;
+
+  const maxWeight = Math.max(...signals.map((item) => item.weight), 1);
+
+  return (
+    <div className="flex h-full flex-col px-5 py-4">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-5 md:grid-cols-[minmax(0,25rem)_1px_minmax(0,1fr)]">
+        <div className="flex min-h-0 flex-col">
+          <div className="mb-4 grid grid-cols-[8.25rem_minmax(0,1fr)] items-center gap-2.5">
+            <h2 className="text-base font-bold text-gray-800 dark:text-gray-100">
+              AI决策解释
+            </h2>
+            <span className="text-right text-[11px] font-semibold text-gray-400 dark:text-gray-500">
+              权重
+            </span>
+          </div>
+
+          <div className="flex flex-1 flex-col justify-center gap-3">
+            {signals.map((item) => {
+              const barWidth = `${Math.max((item.weight / maxWeight) * 100, 10)}%`;
+
+              return (
+                <div
+                  key={item.signal}
+                  className="grid grid-cols-[8.25rem_minmax(0,1fr)] items-center gap-2.5"
+                >
+                  <span className="truncate text-[11.5px] font-medium leading-6 text-gray-500 dark:text-gray-400">
+                    {item.signal}
+                  </span>
+
+                  <div className="relative h-8 rounded-full bg-transparent">
+                    <motion.div
+                      className="flex h-full items-center justify-end rounded-full pr-3 text-right shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_6px_14px_rgba(15,23,42,0.08)]"
+                      style={{ backgroundColor: category.color }}
+                      initial={{ width: 0 }}
+                      animate={{ width: barWidth }}
+                      transition={{
+                        duration: 0.55,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                    >
+                      <span className="text-sm font-black leading-none text-gray-900 dark:text-gray-950">
+                        {item.weight}%
+                      </span>
+                    </motion.div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="hidden bg-gray-200/80 dark:bg-gray-800 md:block" />
+
+        <div className="flex min-h-0 flex-col py-1">
+          <div>
+            <h2 className="mb-2 text-base font-black text-gray-800 dark:text-gray-100">
+              结论
+            </h2>
+            <p className="text-[12px] font-medium leading-6 text-gray-500 dark:text-gray-400">
+              {explanation.judgement}
+            </p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-2 gap-2">
+            {explanation.labels.map((label) => (
+              <span
+                key={label}
+                className="min-w-0 rounded-full px-3 py-1 text-center text-[11px] font-semibold text-gray-800 dark:text-gray-100"
+                style={{ backgroundColor: category.color }}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+// AI运营建议组件
+function OperationSuggestionCard({ category }) {
+  const suggestion = category?.operationSuggestion;
+
+  if (!suggestion) return null;
+
+  const formatExecutorList = (text) => text?.replace(/[、，,]\s*/g, " / ");
+  const detailSections = [
+    { title: "推荐动作", content: suggestion.action },
+    { title: "执行人群", content: formatExecutorList(suggestion.executor) },
+    { title: "运营目标", content: suggestion.goal },
+  ].filter((item) => item.content);
+
+  return (
+    <motion.div
+      className="flex h-full flex-col rounded-2xl bg-white px-5 py-[12.48px] shadow-sm ring-1 ring-gray-100 dark:bg-gray-800 dark:ring-gray-700/60"
+      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{
+        duration: 0.4,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
+      {/* 标题 */}
+      <div className="pb-[8.32px]">
+        <h2 className="text-base font-black text-gray-800 dark:text-gray-100">
+          运营建议
+        </h2>
+      </div>
+
+      {/* 分割线 */}
+      <div className="h-px bg-gray-200/80 dark:bg-gray-700" />
+
+      <div className="mt-[10.4px] space-y-[10.4px]">
+        <p className="text-[12px] leading-[18.72px] text-gray-700 dark:text-gray-300">
+          <span className="font-bold text-gray-800 dark:text-gray-100">
+            优先级：
+          </span>
+          <span className="font-semibold text-gray-700 dark:text-gray-200">
+            {suggestion.priority}
+          </span>
+        </p>
+
+        {detailSections.map((item) => (
+          <div key={item.title}>
+            <p className="text-[12px] font-bold leading-[17.68px] text-gray-800 dark:text-gray-100">
+              {item.title}
+            </p>
+            <p className="mt-[1.04px] pl-2 text-[11px] font-medium leading-[16.64px] text-gray-600 dark:text-gray-300">
+              {item.content}
+            </p>
+          </div>
+        ))}
+      </div>
+    </motion.div>
   );
 }
 
@@ -1277,20 +1589,12 @@ function CategoryDetailModal({ category, originRect, onClose }) {
 
             {/* 左下：AI决策解释 */}
             <section className={`${modalCardClass} col-span-full min-h-[220px] xl:col-span-8`}>
-              <div className="flex h-full flex-col px-5 py-4">
-                <h2 className="mb-3 text-base font-bold text-gray-800 dark:text-gray-100">
-                  AI决策解释
-                </h2>
-              </div>
+              <SignalWeightBars category={category} />
             </section>
 
             {/* 右下：六维价值与运营建议 */}
             <section className={`${modalCardClass} col-span-full min-h-[220px] xl:col-span-4`}>
-              <div className="flex h-full flex-col px-5 py-4">
-                <h2 className="mb-3 text-base font-bold text-gray-800 dark:text-gray-100">
-                  六维价值与运营建议
-                </h2>
-              </div>
+              <OperationSuggestionCard category={category} />
             </section>
           </div>
         </div>

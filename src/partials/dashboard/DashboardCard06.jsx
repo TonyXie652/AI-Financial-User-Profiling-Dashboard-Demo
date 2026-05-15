@@ -4,7 +4,7 @@ import LineChart from '../../charts/LineChart02';
 const financePalette = {
   primaryBlue: '#2F6FDB',
   signalRed: '#C2413F',
-  slateGray: '#475569',
+  accentTeal: '#14B8A6',
 };
 
 const DEFAULT_TIME_RANGE = '30d';
@@ -14,7 +14,6 @@ const KPI_VALUE_MAX = 80;
 const INVERTED_TREND_STEP = -2;
 const EVEN_POINT_DRIFT = 0;
 const ODD_POINT_DRIFT = 2;
-const FORECAST_OVERLAP_POINTS = 1;
 const TREND_LINE_BORDER_WIDTH = 2;
 const TREND_POINT_RADIUS = 0;
 const TREND_POINT_HOVER_RADIUS = 4;
@@ -26,32 +25,71 @@ const KPI_TREND_CHART_DIMENSIONS = {
   width: 595,
   height: 248,
 };
+const METRIC_SHAPES = [
+  {
+    amplitude: 2.2,
+    frequency: 0.75,
+    phase: 0,
+    slope: 1.4,
+    variation: [0, 1, -1, 2, 0, -2, 1],
+  },
+  {
+    amplitude: 3.2,
+    frequency: 1.05,
+    phase: 1.6,
+    slope: -1.8,
+    variation: [1, -2, 2, 3, -1, -3, 0, 2],
+  },
+  {
+    amplitude: 2.8,
+    frequency: 0.9,
+    phase: 3.1,
+    slope: 0.4,
+    variation: [-1, 2, 0, -3, 1, 3, -2, 0],
+  },
+];
+
+function padDateSegment(value) {
+  return String(value).padStart(2, '0');
+}
+
+function createDateLabels(startDate, pointCount, stepDays = 1) {
+  const [month, day, year] = startDate.split('-').map(Number);
+  const start = new Date(year, month - 1, day);
+
+  return Array.from({ length: pointCount }, (_, index) => {
+    const date = new Date(start);
+    date.setDate(start.getDate() + index * stepDays);
+
+    return [
+      padDateSegment(date.getMonth() + 1),
+      padDateSegment(date.getDate()),
+      date.getFullYear(),
+    ].join('-');
+  });
+}
 
 const timeRangeConfig = {
   '7d': {
     label: '近7天',
-    unit: 'day',
     labels: ['05-07-2026', '05-08-2026', '05-09-2026', '05-10-2026', '05-11-2026', '05-12-2026', '05-13-2026'],
     historyPoints: 5,
     trend: 'short',
   },
   '30d': {
     label: '近30天',
-    unit: 'day',
-    labels: ['04-14-2026', '04-19-2026', '04-24-2026', '04-29-2026', '05-04-2026', '05-09-2026', '05-14-2026'],
-    historyPoints: 5,
+    labels: createDateLabels('04-14-2026', 11, 3),
+    historyPoints: 7,
     trend: 'medium',
   },
   '90d': {
     label: '近90天',
-    unit: 'week',
-    labels: ['02-12-2026', '02-26-2026', '03-12-2026', '03-26-2026', '04-09-2026', '04-23-2026', '05-07-2026', '05-21-2026'],
-    historyPoints: 6,
+    labels: createDateLabels('02-13-2026', 14, 7),
+    historyPoints: 10,
     trend: 'quarter',
   },
   '1y': {
     label: '近一年',
-    unit: 'month',
     labels: ['06-01-2025', '07-01-2025', '08-01-2025', '09-01-2025', '10-01-2025', '11-01-2025', '12-01-2025', '01-01-2026', '02-01-2026', '03-01-2026', '04-01-2026', '05-01-2026', '06-01-2026'],
     historyPoints: 9,
     trend: 'year',
@@ -86,7 +124,7 @@ const kpiGroups = {
     },
     {
       label: '高价值用户数',
-      color: financePalette.slateGray,
+      color: financePalette.accentTeal,
       offset: -8,
     },
     {
@@ -103,7 +141,7 @@ const kpiGroups = {
     },
     {
       label: '工具使用指数',
-      color: financePalette.slateGray,
+      color: financePalette.accentTeal,
       offset: -6,
     },
     {
@@ -120,7 +158,7 @@ const kpiGroups = {
     },
     {
       label: '平均标签指数',
-      color: financePalette.slateGray,
+      color: financePalette.accentTeal,
       offset: -9,
     },
     {
@@ -137,7 +175,7 @@ const kpiGroups = {
     },
     {
       label: 'AI预测价值',
-      color: financePalette.slateGray,
+      color: financePalette.accentTeal,
       offset: -2,
     },
     {
@@ -155,7 +193,7 @@ const kpiGroups = {
     },
     {
       label: '成长人群指数',
-      color: financePalette.slateGray,
+      color: financePalette.accentTeal,
       offset: -11,
     },
     {
@@ -171,27 +209,58 @@ function clampValue(value) {
   return Math.max(KPI_VALUE_MIN, Math.min(KPI_VALUE_MAX, value));
 }
 
-function applyMetricShape(values, item) {
-  return values.map((value, index) => {
-    const drift = item.invert
-      ? index * INVERTED_TREND_STEP
-      : index % 2 === 0
-        ? EVEN_POINT_DRIFT
-        : ODD_POINT_DRIFT;
-    return clampValue(value + item.offset + drift);
+function interpolateSeries(anchors, pointCount) {
+  if (anchors.length === pointCount) return anchors;
+  if (pointCount <= 1) return anchors.slice(0, pointCount);
+
+  return Array.from({ length: pointCount }, (_, index) => {
+    const position = (index / (pointCount - 1)) * (anchors.length - 1);
+    const leftIndex = Math.floor(position);
+    const rightIndex = Math.min(leftIndex + 1, anchors.length - 1);
+    const ratio = position - leftIndex;
+
+    return anchors[leftIndex] + (anchors[rightIndex] - anchors[leftIndex]) * ratio;
   });
 }
 
-function createTrendDatasets(item, rangeConfig) {
+function applyMetricShape(values, item, startIndex = 0, shape = METRIC_SHAPES[0], totalPoints = values.length) {
+  return values.map((value, index) => {
+    const pointIndex = startIndex + index;
+    const drift = item.invert
+      ? pointIndex * INVERTED_TREND_STEP
+      : pointIndex % 2 === 0
+        ? EVEN_POINT_DRIFT
+        : ODD_POINT_DRIFT;
+    const progress = totalPoints > 1 ? pointIndex / (totalPoints - 1) : 0;
+    const wave = Math.sin((pointIndex + shape.phase) * shape.frequency) * shape.amplitude;
+    const variation = shape.variation[pointIndex % shape.variation.length];
+    const momentum = (progress - 0.5) * shape.slope;
+
+    return Math.round(clampValue(value + item.offset + drift + wave + variation + momentum));
+  });
+}
+
+function createMetricSeries(item, rangeConfig, shape) {
   const { labels, historyPoints, trend } = rangeConfig;
   const baseSeries = rangeSeries[trend];
-  const history = applyMetricShape(baseSeries.history.slice(0, historyPoints), item);
-  const shapedForecast = applyMetricShape(baseSeries.forecast, item);
-  const forecast = [
-    history[history.length - 1],
-    ...shapedForecast.slice(FORECAST_OVERLAP_POINTS),
-  ];
-  const forecastOffset = history.length - FORECAST_OVERLAP_POINTS;
+  const forecastPoints = labels.length - historyPoints;
+  const history = interpolateSeries(baseSeries.history, historyPoints);
+  const forecast = forecastPoints > 0
+    ? interpolateSeries([history[history.length - 1], ...baseSeries.forecast.slice(1)], forecastPoints + 1).slice(1)
+    : [];
+
+  return applyMetricShape(
+    [...history, ...forecast],
+    item,
+    0,
+    shape,
+    labels.length,
+  );
+}
+
+function createTrendDatasets(item, rangeConfig, metricIndex) {
+  const { historyPoints } = rangeConfig;
+  const shape = METRIC_SHAPES[metricIndex % METRIC_SHAPES.length];
   const baseOptions = {
     fill: false,
     borderWidth: TREND_LINE_BORDER_WIDTH,
@@ -204,33 +273,21 @@ function createTrendDatasets(item, rangeConfig) {
     clip: TREND_CHART_CLIP_PADDING,
     tension: TREND_LINE_TENSION,
     spanGaps: false,
+    segment: {
+      borderDash: (context) => (
+        context.p0DataIndex >= historyPoints - 1 ? FORECAST_BORDER_DASH : undefined
+      ),
+    },
   };
 
-  return [
-    {
-      ...baseOptions,
-      label: `${item.label} 历史数据`,
-      metricLabel: item.label,
-      segmentLabel: '历史数据',
-      data: [
-        ...history,
-        ...Array(labels.length - history.length).fill(null),
-      ],
-      borderColor: item.color,
-    },
-    {
-      ...baseOptions,
-      label: `${item.label} AI预测`,
-      metricLabel: item.label,
-      segmentLabel: 'AI预测',
-      data: [
-        ...Array(forecastOffset).fill(null),
-        ...forecast,
-      ],
-      borderColor: item.color,
-      borderDash: FORECAST_BORDER_DASH,
-    },
-  ];
+  return {
+    ...baseOptions,
+    label: item.label,
+    metricLabel: item.label,
+    historyPoints,
+    data: createMetricSeries(item, rangeConfig, shape),
+    borderColor: item.color,
+  };
 }
 
 function DashboardCard06({ timeRange = DEFAULT_TIME_RANGE }) {
@@ -240,7 +297,7 @@ function DashboardCard06({ timeRange = DEFAULT_TIME_RANGE }) {
 
   const chartData = useMemo(() => ({
     labels: rangeConfig.labels,
-    datasets: activeLines.flatMap((item) => createTrendDatasets(item, rangeConfig)),
+    datasets: activeLines.map((item, index) => createTrendDatasets(item, rangeConfig, index)),
   }), [activeLines, rangeConfig]);
 
   return (
@@ -279,7 +336,6 @@ function DashboardCard06({ timeRange = DEFAULT_TIME_RANGE }) {
       </header>
       <LineChart
         data={chartData}
-        timeUnit={rangeConfig.unit}
         width={KPI_TREND_CHART_DIMENSIONS.width}
         height={KPI_TREND_CHART_DIMENSIONS.height}
       />

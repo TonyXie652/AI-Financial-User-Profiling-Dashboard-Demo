@@ -749,6 +749,7 @@ function Personal_profile({ sidebarOpen, setSidebarOpen }) {
         onSearchSuggestionSelect={handleSuggestionSelect}
         currentUserName={visibleUserName}
         currentUserType={visibleUserType}
+        variant="v3"
       />
 
       <main className="grow bg-gray-50 dark:bg-gray-950 transition-colors duration-300">

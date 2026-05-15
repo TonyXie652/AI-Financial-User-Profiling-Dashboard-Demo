@@ -3,18 +3,20 @@ import { useThemeProvider } from '../utils/ThemeContext';
 
 import { chartColors } from './ChartjsConfig';
 import {
-  Chart, LineController, LineElement, Filler, PointElement, LinearScale, TimeScale, Tooltip, Legend,
+  Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend,
 } from 'chart.js';
-import 'chartjs-adapter-moment';
 
-// Import utilities
-import { formatThousands } from '../utils/Utils';
+import { adjustColorOpacity, formatThousands } from '../utils/Utils';
 
-Chart.register(LineController, LineElement, Filler, PointElement, LinearScale, TimeScale, Tooltip, Legend);
+Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend);
+
+const X_AXIS_TICK_FONT_SIZE = 12;
+const X_AXIS_TICK_FONT_WEIGHT = 500;
+const X_AXIS_TICK_OPACITY = 0.58;
+const X_AXIS_ACTIVE_TICK_OPACITY = 1;
 
 function LineChart02({
   data,
-  timeUnit = 'month',
   width,
   height
 }) {
@@ -25,12 +27,19 @@ function LineChart02({
   const { currentTheme } = useThemeProvider();
   const darkMode = currentTheme === 'dark';
   const { textColor, gridColor, tooltipBodyColor, tooltipBgColor, tooltipBorderColor } = chartColors;
+  const createXAxisTickColor = (isDarkMode) => (context) => {
+    const baseColor = isDarkMode ? textColor.dark : textColor.light;
+    const opacity = context.index === context.chart.$activeTickIndex
+      ? X_AXIS_ACTIVE_TICK_OPACITY
+      : X_AXIS_TICK_OPACITY;
+
+    return adjustColorOpacity(baseColor, opacity);
+  };
 
   useEffect(() => {
     const ctx = canvas.current;
     if (!ctx) return undefined;
     Chart.getChart(ctx)?.destroy();
-    // eslint-disable-next-line no-unused-vars
     const newChart = new Chart(ctx, {
       type: 'line',
       data: data,
@@ -55,16 +64,7 @@ function LineChart02({
             },
           },
           x: {
-            type: 'time',
-            time: {
-              parser: 'MM-DD-YYYY',
-              unit: timeUnit,
-              displayFormats: {
-                day: 'MMM D',
-                week: 'MMM D',
-                month: 'MMM YY',
-              },
-            },
+            type: 'category',
             border: {
               display: false,
             },
@@ -72,9 +72,13 @@ function LineChart02({
               display: false,
             },
             ticks: {
-              autoSkipPadding: 48,
+              autoSkip: false,
               maxRotation: 0,
-              color: darkMode ? textColor.dark : textColor.light,
+              color: createXAxisTickColor(darkMode),
+              font: {
+                size: X_AXIS_TICK_FONT_SIZE,
+                weight: X_AXIS_TICK_FONT_WEIGHT,
+              },
             },
           },
         },
@@ -87,7 +91,7 @@ function LineChart02({
               title: () => false, // Disable tooltip title
               label: (context) => {
                 const metric = context.dataset.metricLabel || context.dataset.label;
-                const segment = context.dataset.segmentLabel ? ` · ${context.dataset.segmentLabel}` : '';
+                const segment = context.dataIndex >= context.dataset.historyPoints ? ' / AI预测' : ' / 历史数据';
                 return `${metric}${segment}: ${formatThousands(context.parsed.y)}`;
               },
             },
@@ -98,7 +102,16 @@ function LineChart02({
         },
         interaction: {
           intersect: false,
-          mode: 'nearest',
+          mode: 'index',
+          axis: 'x',
+        },
+        onHover: (_, activeElements, activeChart) => {
+          const activeTickIndex = activeElements.length > 0 ? activeElements[0].index : null;
+
+          if (activeChart.$activeTickIndex === activeTickIndex) return;
+
+          activeChart.$activeTickIndex = activeTickIndex;
+          activeChart.update('none');
         },
         transitions: {
           show: {
@@ -215,21 +228,20 @@ function LineChart02({
     });
     setChart(newChart);
     return () => newChart.destroy();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!chart) return;
 
     if (darkMode) {
-      chart.options.scales.x.ticks.color = textColor.dark;
+      chart.options.scales.x.ticks.color = createXAxisTickColor(true);
       chart.options.scales.y.ticks.color = textColor.dark;
       chart.options.scales.y.grid.color = gridColor.dark;
       chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.dark;
       chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.dark;
       chart.options.plugins.tooltip.borderColor = tooltipBorderColor.dark;
     } else {
-      chart.options.scales.x.ticks.color = textColor.light;
+      chart.options.scales.x.ticks.color = createXAxisTickColor(false);
       chart.options.scales.y.ticks.color = textColor.light;
       chart.options.scales.y.grid.color = gridColor.light;
       chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.light;
@@ -243,9 +255,9 @@ function LineChart02({
     if (!chart) return;
 
     chart.data = data;
-    chart.options.scales.x.time.unit = timeUnit;
+    chart.$activeTickIndex = null;
     chart.update();
-  }, [chart, data, timeUnit]);
+  }, [chart, data]);
 
   return (
     <React.Fragment>
@@ -257,7 +269,6 @@ function LineChart02({
           <ul ref={legend} className="flex w-full flex-nowrap items-center gap-x-6 gap-y-2 overflow-x-auto whitespace-nowrap lg:w-auto lg:justify-end sm:gap-x-7"></ul>
         </div>
       </div>
-      {/* Chart built with Chart.js 3 */}
       <div className="grow">
         <canvas ref={canvas} width={width} height={height}></canvas>
       </div>
