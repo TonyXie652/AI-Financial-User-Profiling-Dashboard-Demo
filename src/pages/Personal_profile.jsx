@@ -6,6 +6,7 @@ import { calculateUserScores } from "../utils/calculateUserScores";
 
 const profileCardClass = "bg-white hover:bg-blue-50/40 dark:bg-gray-900 dark:hover:bg-white/[0.04] shadow-xs hover:shadow-md dark:shadow-[0_12px_28px_rgba(0,0,0,0.26)] dark:hover:shadow-[0_16px_34px_rgba(0,0,0,0.34)] rounded-xl transition-all duration-300";
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001";
+const DEFAULT_SELECTED_USER_ID = "U1001";
 const RADAR_DIMENSION_COUNT = 6;
 const TRADITIONAL_SCORE_WEIGHT = 0.6;
 const AI_PREDICTION_SCORE_WEIGHT = 0.4;
@@ -630,6 +631,18 @@ function Personal_profile({ sidebarOpen, setSidebarOpen }) {
       if (ignore) return;
 
       setUsers(nextUsers);
+
+      const defaultUser = (
+        nextUsers.find((user) => user.id === DEFAULT_SELECTED_USER_ID) ||
+        nextUsers[0]
+      );
+
+      if (defaultUser) {
+        setSelectedUser((currentUser) => currentUser || defaultUser);
+        setSearchQuery((currentQuery) => currentQuery || defaultUser.name);
+        setVisibleUserName((currentName) => currentName || defaultUser.name);
+        setVisibleUserType((currentType) => currentType || defaultUser.user_type);
+      }
 
       const profiles = await Promise.all(
         nextUsers.map(async (user) => {

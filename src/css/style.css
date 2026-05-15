@@ -124,6 +124,13 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
   }
@@ -207,6 +214,5 @@
     animation-timing-function: ease-out;
   }
 }
-
 
 
